@@ -32,7 +32,8 @@
   "scripts": {
     "test": "vitest",
     "build": "tsup",
-    "prepare": "husky"
+    "prepare": "husky",
+    "publish": "changeset publish"
   },
   "dependencies": {
     "ky": "^1.7.5",
