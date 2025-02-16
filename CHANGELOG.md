@@ -1,5 +1,11 @@
 # @usegranthq/sdk
 
+## 1.0.2
+
+### Patch Changes
+
+- 6b7e915: Fix publish step
+
 ## 1.0.1
 
 ### Patch Changes
