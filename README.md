@@ -7,11 +7,11 @@ TypeSafe TypeScript SDK for accessing the UseGrant REST API.
 SDK can be installed using [npm], [bun] or [pnpm] package managers:
 
 ```bash
-npm install @usegrant/sdk
+npm install @usegranthq/sdk
 # or
-bun install @usegrant/sdk
+bun install @usegranthq/sdk
 # or
-pnpm install @usegrant/sdk
+pnpm install @usegranthq/sdk
 ```
 
 ## Authentication
