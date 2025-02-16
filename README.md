@@ -2,6 +2,8 @@
 
 TypeSafe TypeScript SDK for accessing the UseGrant REST API.
 
+[![Tests](https://github.com/usegranthq/sdk/actions/workflows/tests.yml/badge.svg)](https://github.com/usegranthq/sdk/actions/workflows/tests.yml)
+
 ## Installation
 
 SDK can be installed using [npm], [bun] or [pnpm] package managers:
