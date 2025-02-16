@@ -34,8 +34,10 @@ The following example shows how to create a provider using the SDK.
 ```ts
 import UseGrant from '@usegrant/sdk';
 
+// Initialize the SDK
 const usegrant = new UseGrant('YOUR_API_KEY');
 
+// Create a provider
 const provider = await usegrant.createProvider({
   name: 'My Provider',
   description: 'My Provider Description',
@@ -61,6 +63,12 @@ Available methods:
 
 Refer to the [API Reference](https://usegrant.dev/docs) for more information about the available methods and their parameters.
 
+## TypeScript Support
+
+The SDK is written in TypeScript and provides full type safety out of the box. All methods and their parameters are fully typed:
+
+## Configuration
+
 ### Retry Options
 
 The SDK uses the [ky](https://github.com/sindresorhus/ky) library under the hood, which supports retry options. You can pass a `retry` option to the constructor to customize the retry behavior.
@@ -81,7 +89,9 @@ Refer to the [ky retry options](https://github.com/sindresorhus/ky?tab=readme-ov
 The SDK throws a custom error `UseGrantError` when you face any errors from the API. You can catch the error and handle it accordingly.
 
 ```ts
-import { UseGrantError } from '@usegrant/sdk';
+import { UseGrant, UseGrantError } from '@usegrant/sdk';
+
+const usegrant = new UseGrant('YOUR_API_KEY');
 
 try {
   const provider = await usegrant.createProvider({
@@ -94,6 +104,22 @@ try {
   }
 }
 ```
+
+### Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run changeset `npx @changeset/cli` to generate the changelog and commit the generated changelog file along with the changes
+5. Commit your changes (`git commit -m 'Add some amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+Please make sure to update tests as appropriate and follow the existing coding style.
+
+For reference to changeset, please refer to the [Changeset Documentation](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md).
 
 [npm]: https://www.npmjs.com
 [bun]: https://bun.sh/
