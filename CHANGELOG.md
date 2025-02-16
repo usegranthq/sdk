@@ -1,5 +1,11 @@
 # @usegranthq/sdk
 
+## 1.0.3
+
+### Patch Changes
+
+- bd0cfb6: Fix auto publish script
+
 ## 1.0.2
 
 ### Patch Changes
