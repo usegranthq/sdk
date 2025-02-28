@@ -28,7 +28,8 @@
     "dist"
   ],
   "publishConfig": {
-    "provenance": true
+    "provenance": true,
+    "access": "public"
   },
   "scripts": {
     "test": "vitest",
