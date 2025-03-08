@@ -20,7 +20,7 @@ pnpm install @usegrant/sdk
 
 To use the SDK, you need to have an API key. You can create one in the [UseGrant Settings Page](https://usegrant.dev/u/settings/token) page. If you face any 401 or 403 errors when you are sending a token, it can be one of the following reasons:
 
-- The token is invalid, check if you have copied the token correctly. Also make sure the token is in format `usegrant_api_<token>`.
+- The token is invalid, check if you have copied the token correctly. Also make sure the token is in format `uga_<token>`.
 - The token has expired, you can create a new token and replace the existing token.
 
 ## Runtime
