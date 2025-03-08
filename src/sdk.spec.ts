@@ -53,7 +53,7 @@ describe('UseGrant SDK', () => {
       description: 'Test Provider Description',
     };
 
-    const createProviderReq: Types.CreateProviderReq = {
+    const createProviderReq = {
       name: 'Test Provider',
       description: 'Test Provider Description',
     };
@@ -95,7 +95,7 @@ describe('UseGrant SDK', () => {
       description: 'Test Client Description',
     };
 
-    const createClientReq: Types.CreateClientReq = {
+    const createClientReq = {
       name: 'Test Client',
       description: 'Test Client Description',
     };
@@ -139,7 +139,7 @@ describe('UseGrant SDK', () => {
       type: 'Bearer',
     };
 
-    const createTokenReq: Types.CreateTokenReq = {
+    const createTokenReq = {
       expiresIn: 3600,
       useJwtType: false,
       audienceAsArray: false,
@@ -166,7 +166,7 @@ describe('UseGrant SDK', () => {
       description: 'Test Tenant Description',
     };
 
-    const createTenantReq: Types.CreateTenantReq = {
+    const createTenantReq = {
       name: 'Test Tenant',
       description: 'Test Tenant Description',
     };
@@ -212,9 +212,9 @@ describe('UseGrant SDK', () => {
       earliestIssuanceTimeAllowed: 12,
     };
 
-    const createTenantProviderReq: Types.CreateTenantProviderReq = {
+    const createTenantProviderReq = {
       url: 'https://provider.com',
-      fingerprints: ['fingerprint1', 'fingerprint2'],
+      fingerprints: ['990F4193972F2BECF12DDEDA5237F9C952F20D9E', '110F4193972F2BECF12DDEDA5237F9C952F20D9E'],
       audience: 'test-audience',
       earliestIssuanceTimeAllowed: 12,
     };
@@ -256,11 +256,11 @@ describe('UseGrant SDK', () => {
 
     it('should validate a token', async () => {
       mockKyInstance.post.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve(mockToken)),
+        json: vi.fn(() => Promise.resolve({ isValid: true })),
       }));
 
       const result = await sdk.validateToken('tenant-123', mockToken);
-      expect(result).toEqual(mockToken);
+      expect(result).toEqual({ isValid: true });
       expect(mockKyInstance.post).toHaveBeenCalledWith('v1/tenants/tenant-123/validate', {
         json: { token: mockToken },
       });

@@ -1,5 +1,6 @@
 import ky, { KyInstance, RetryOptions, HTTPError } from 'ky';
 import * as Types from './types';
+import * as schema from './schema';
 
 const API_URL = 'https://sdk.usegrant.dev';
 
@@ -8,6 +9,7 @@ interface UseGrantOptions {
 }
 
 export { HTTPError as UseGrantError };
+export * from './types';
 
 class UseGrant {
   api: KyInstance;
@@ -26,61 +28,61 @@ class UseGrant {
     });
   }
 
-  createProvider(providerReqBody: Types.CreateProviderReq): Promise<Types.Provider> {
-    return this.api.post<Types.Provider>('v1/providers', { json: providerReqBody }).json();
-  }
+  createProvider = schema.CreateProviderFn.implement((req) => {
+    return this.api.post<Types.Provider>('v1/providers', { json: req }).json();
+  });
 
-  getProvider(providerId: string): Promise<Types.Provider> {
-    return this.api.get<Types.Provider>(`v1/providers/${providerId}`).json();
-  }
+  getProvider = schema.GetProviderFn.implement((id) => {
+    return this.api.get<Types.Provider>(`v1/providers/${id}`).json();
+  });
 
-  deleteProvider(providerId: string): Promise<void> {
-    return this.api.delete(`v1/providers/${providerId}`).json();
-  }
+  deleteProvider = schema.DeleteProviderFn.implement((id) => {
+    return this.api.delete(`v1/providers/${id}`).json();
+  });
 
-  createClient(providerId: string, clientReqBody: Types.CreateClientReq): Promise<Types.Client> {
-    return this.api.post<Types.Client>(`v1/providers/${providerId}/clients`, { json: clientReqBody }).json();
-  }
+  createClient = schema.CreateClientFn.implement((providerId, req) => {
+    return this.api.post<Types.Client>(`v1/providers/${providerId}/clients`, { json: req }).json();
+  });
 
-  getClient(providerId: string, clientId: string): Promise<Types.Client> {
+  getClient = schema.GetClientFn.implement((providerId, clientId) => {
     return this.api.get<Types.Client>(`v1/providers/${providerId}/clients/${clientId}`).json();
-  }
+  });
 
-  deleteClient(providerId: string, clientId: string): Promise<void> {
+  deleteClient = schema.DeleteClientFn.implement((providerId, clientId) => {
     return this.api.delete(`v1/providers/${providerId}/clients/${clientId}`).json();
-  }
+  });
 
-  createToken(providerId: string, clientId: string, token: Types.CreateTokenReq): Promise<Types.Token> {
-    return this.api.post<Types.Token>(`v1/providers/${providerId}/clients/${clientId}/tokens`, { json: token }).json();
-  }
+  createToken = schema.CreateTokenFn.implement((providerId, clientId, req) => {
+    return this.api.post<Types.Token>(`v1/providers/${providerId}/clients/${clientId}/tokens`, { json: req }).json();
+  });
 
-  createTenant(tenantReqBody: Types.CreateTenantReq): Promise<Types.Tenant> {
-    return this.api.post<Types.Tenant>('v1/tenants', { json: tenantReqBody }).json();
-  }
+  createTenant = schema.CreateTenantFn.implement((req) => {
+    return this.api.post<Types.Tenant>('v1/tenants', { json: req }).json();
+  });
 
-  getTenant(tenantId: string): Promise<Types.Tenant> {
+  getTenant = schema.GetTenantFn.implement((tenantId) => {
     return this.api.get<Types.Tenant>(`v1/tenants/${tenantId}`).json();
-  }
+  });
 
-  deleteTenant(tenantId: string): Promise<void> {
+  deleteTenant = schema.DeleteTenantFn.implement((tenantId) => {
     return this.api.delete(`v1/tenants/${tenantId}`).json();
-  }
+  });
 
-  createTenantProvider(tenantId: string, providerReqBody: Types.CreateTenantProviderReq): Promise<Types.Provider> {
-    return this.api.post<Types.Provider>(`v1/tenants/${tenantId}/providers`, { json: providerReqBody }).json();
-  }
+  createTenantProvider = schema.CreateTenantProviderFn.implement((tenantId, req) => {
+    return this.api.post<Types.Provider>(`v1/tenants/${tenantId}/providers`, { json: req }).json();
+  });
 
-  getTenantProvider(tenantId: string, providerId: string): Promise<Types.TenantProvider> {
+  getTenantProvider = schema.GetTenantProviderFn.implement((tenantId, providerId) => {
     return this.api.get<Types.TenantProvider>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
-  }
+  });
 
-  deleteTenantProvider(tenantId: string, providerId: string): Promise<void> {
+  deleteTenantProvider = schema.DeleteTenantProviderFn.implement((tenantId, providerId) => {
     return this.api.delete(`v1/tenants/${tenantId}/providers/${providerId}`).json();
-  }
+  });
 
-  validateToken(tenantId: string, token: string): Promise<Types.Token> {
+  validateToken = schema.ValidateTokenFn.implement((tenantId, token) => {
     return this.api.post<Types.Token>(`v1/tenants/${tenantId}/validate`, { json: { token } }).json();
-  }
+  });
 }
 
 export default UseGrant;

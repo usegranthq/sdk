@@ -1,46 +1,8 @@
 import { z } from 'zod';
-import {
-  createClientSchema,
-  createProviderSchema,
-  createTenantProviderSchema,
-  createTenantSchema,
-  createTokenSchema,
-} from './schema';
+import * as schema from './schema';
 
-export type CreateProviderReq = z.infer<typeof createProviderSchema>;
-export type CreateClientReq = z.infer<typeof createClientSchema>;
-export type CreateTokenReq = z.infer<typeof createTokenSchema>;
-export type CreateTenantReq = z.infer<typeof createTenantSchema>;
-export type CreateTenantProviderReq = z.infer<typeof createTenantProviderSchema>;
-
-export interface Provider {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface Client {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface Token {
-  accessToken: string;
-  expiresAt: string;
-  type: 'Bearer';
-}
-
-export interface Tenant {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface TenantProvider {
-  id: string;
-  url: string;
-  fingerprints: string[];
-  audience: string;
-  earliestIssuanceTimeAllowed: number;
-}
+export type Provider = z.infer<typeof schema.ProviderSchema>;
+export type Client = z.infer<typeof schema.ClientSchema>;
+export type Token = z.infer<typeof schema.TokenSchema>;
+export type Tenant = z.infer<typeof schema.TenantSchema>;
+export type TenantProvider = z.infer<typeof schema.TenantProviderSchema>;
