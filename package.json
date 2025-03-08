@@ -10,6 +10,13 @@
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
+  "keywords": [
+    "usegrant",
+    "sdk",
+    "oidc",
+    "machine-to-machine",
+    "oauth2"
+  ],
   "exports": {
     ".": {
       "require": {
