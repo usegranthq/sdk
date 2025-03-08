@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.3.0
+
+### Minor Changes
+
+- 0494a4d: Add get all endpoints for providers, clients, tenants, tenant providers
+
 ## 1.2.0
 
 ### Minor Changes
