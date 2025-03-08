@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.2.0
+
+### Minor Changes
+
+- 902de34: Publish missing assets to npm
+
 ## 1.1.0
 
 ### Minor Changes
