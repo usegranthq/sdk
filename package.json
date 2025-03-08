@@ -1,0 +1,55 @@
+{
+  "name": "@usegrant/sdk",
+  "version": "0.0.0",
+  "description": "TypeSafe TypeScript SDK for accessing the UseGrant REST API",
+  "license": "Apache-2.0",
+  "author": "sibiraj-s",
+  "homepage": "https://usegrant.dev",
+  "repository": "github:usegranthq/sdk",
+  "bugs": "https://github.com/usegranthq/sdk/issues",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  },
+  "scripts": {
+    "test": "vitest",
+    "build": "tsup",
+    "postbuild": "publint",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "ky": "^1.7.5",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.28.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "oxlint": "^0.15.13",
+    "prettier": "^3.5.3",
+    "publint": "^0.3.8",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  }
+}
