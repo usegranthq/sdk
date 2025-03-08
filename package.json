@@ -28,6 +28,17 @@
         "default": "./dist/index.js"
       },
       "default": "./dist/index.js"
+    },
+    "./schema": {
+      "require": {
+        "types": "./dist/schema.d.cts",
+        "default": "./dist/schema.cjs"
+      },
+      "import": {
+        "types": "./dist/schema.d.ts",
+        "default": "./dist/schema.js"
+      },
+      "default": "./dist/schema.js"
     }
   },
   "types": "dist/index.d.ts",
