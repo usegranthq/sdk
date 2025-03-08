@@ -106,9 +106,17 @@ export const ClientIdSchema = z.string().min(1, { message: 'Client ID is require
 export const TenantIdSchema = z.string().min(1, { message: 'Tenant ID is required.' });
 export const TenantProviderIdSchema = z.string().min(1, { message: 'Tenant provider ID is required.' });
 
+export const GetProvidersFn = z
+  .function()
+  .args(z.void())
+  .returns(z.promise(z.array(ProviderSchema)));
 export const CreateProviderFn = z.function().args(CreateProviderSchema).returns(z.promise(ProviderSchema));
 export const GetProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(ProviderSchema));
 export const DeleteProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(z.void()));
+export const GetClientsFn = z
+  .function()
+  .args(ProviderIdSchema)
+  .returns(z.promise(z.array(ClientSchema)));
 export const CreateClientFn = z.function().args(ProviderIdSchema, CreateClientSchema).returns(z.promise(ClientSchema));
 export const GetClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).returns(z.promise(ClientSchema));
 export const DeleteClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).returns(z.promise(z.void()));
@@ -116,9 +124,17 @@ export const CreateTokenFn = z
   .function()
   .args(ProviderIdSchema, ClientIdSchema, CreateTokenSchema)
   .returns(z.promise(TokenSchema));
+export const GetTenantsFn = z
+  .function()
+  .args(z.void())
+  .returns(z.promise(z.array(TenantSchema)));
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
 export const DeleteTenantFn = z.function().args(TenantIdSchema).returns(z.promise(z.void()));
+export const GetTenantProvidersFn = z
+  .function()
+  .args(TenantIdSchema)
+  .returns(z.promise(z.array(TenantProviderSchema)));
 export const CreateTenantProviderFn = z
   .function()
   .args(TenantIdSchema, CreateTenantProviderSchema)
