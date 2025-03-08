@@ -1,5 +1,12 @@
 # @usegrant/sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- bf61b3e: Export zod schemas and types
+- 6ce5c43: Strict argument validations
+
 ## 1.0.0
 
 ### Major Changes
