@@ -5,7 +5,8 @@ import * as schema from './schema';
 const API_URL = 'https://sdk.usegrant.dev';
 
 interface UseGrantOptions {
-  retry?: RetryOptions;
+  baseUrl: string;
+  retry: RetryOptions;
 }
 
 export { HTTPError as UseGrantError };
@@ -14,13 +15,13 @@ export * from './types';
 class UseGrant {
   api: KyInstance;
 
-  constructor(apiKey: string, options: UseGrantOptions = {}) {
+  constructor(apiKey: string, options: Partial<UseGrantOptions> = {}) {
     if (!apiKey) {
       throw new Error('API key is required');
     }
 
     this.api = ky.create({
-      prefixUrl: API_URL,
+      prefixUrl: options.baseUrl ?? API_URL,
       headers: {
         Authorization: `Bearer ${apiKey}`,
       },
