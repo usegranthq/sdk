@@ -80,7 +80,7 @@ describe('UseGrant SDK', () => {
 
     it('should delete a provider', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve()),
+        json: vi.fn(() => Promise.resolve({})),
       }));
 
       await sdk.deleteProvider('p-123');
@@ -92,12 +92,12 @@ describe('UseGrant SDK', () => {
     const mockClient: Types.Client = {
       id: 'client-123',
       name: 'Test Client',
-      description: 'Test Client Description',
+      audience: 'sts.testaudience.com',
     };
 
     const createClientReq = {
       name: 'Test Client',
-      description: 'Test Client Description',
+      audience: 'sts.testaudience.com',
     };
 
     it('should create a client', async () => {
@@ -124,7 +124,7 @@ describe('UseGrant SDK', () => {
 
     it('should delete a client', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve()),
+        json: vi.fn(() => Promise.resolve({})),
       }));
 
       await sdk.deleteClient('p-123', 'client-123');
@@ -195,7 +195,7 @@ describe('UseGrant SDK', () => {
 
     it('should delete a tenant', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve()),
+        json: vi.fn(() => Promise.resolve({})),
       }));
 
       await sdk.deleteTenant('tenant-123');
@@ -243,7 +243,7 @@ describe('UseGrant SDK', () => {
 
     it('should delete a tenant provider', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve()),
+        json: vi.fn(() => Promise.resolve({})),
       }));
 
       await sdk.deleteTenantProvider('tenant-123', 'provider-123');
@@ -256,11 +256,11 @@ describe('UseGrant SDK', () => {
 
     it('should validate a token', async () => {
       mockKyInstance.post.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({ isValid: true })),
+        json: vi.fn(() => Promise.resolve({ expiresAt: 1715145600 })),
       }));
 
       const result = await sdk.validateToken('tenant-123', mockToken);
-      expect(result).toEqual({ isValid: true });
+      expect(result).toEqual({ expiresAt: 1715145600 });
       expect(mockKyInstance.post).toHaveBeenCalledWith('v1/tenants/tenant-123/validate', {
         json: { token: mockToken },
       });

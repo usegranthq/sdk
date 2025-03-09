@@ -21,21 +21,22 @@ export const CreateClientSchema = z.object({
     .describe('The name of the client')
     .min(3, 'Name must be at least 3 characters long')
     .max(50, 'Name must be less than 50 characters long'),
-  description: z
+  audience: z
     .string()
-    .describe('The description of the client')
-    .min(1, 'Description is required')
-    .max(100, 'Description must be less than 100 characters long'),
+    .describe('The audience of the client')
+    .min(3, 'Audience must be at least 3 characters long')
+    .max(100, 'Audience must be less than 100 characters long'),
 });
 
 export const CreateTokenSchema = z.object({
   expiresIn: z
     .number()
     .describe('The number of seconds the token will be valid for')
-    .max(FOURTY_EIGHT_HOURS, 'Expires in must be less than 48 hours'),
-  useJwtType: z.boolean().describe('Whether to use at+jwt token type in the header'),
-  audienceAsArray: z.boolean().describe('Whether to use an array of audiences'),
-  forceDefaultDomain: z.boolean().describe('Whether to force the default domain'),
+    .max(FOURTY_EIGHT_HOURS, 'Expires in must be less than 48 hours')
+    .optional(),
+  useJwtType: z.boolean().describe('Whether to use at+jwt token type in the header').optional(),
+  audienceAsArray: z.boolean().describe('Whether to use an array of audiences').optional(),
+  forceDefaultDomain: z.boolean().describe('Whether to force the default domain').optional(),
 });
 
 export const CreateTenantSchema = z.object({
@@ -72,7 +73,7 @@ export const CreateTenantProviderSchema = z.object({
     .trim(),
   earliestIssuanceTimeAllowed: z
     .number({ required_error: 'Please provide the earliest issuance time allowed.', coerce: true })
-    .describe('The earliest issuance time allowed')
+    .describe('The earliest issuance time allowed in hours')
     .min(0, { message: 'Earliest issuance time allowed must be at least 0.' })
     .max(12, { message: 'Earliest issuance time allowed must be at most 12.' }),
 });
@@ -86,7 +87,7 @@ export const ProviderSchema = z.object({
 export const ClientSchema = z.object({
   id: z.string().describe('The ID of the client'),
   name: z.string().describe('The name of the client'),
-  description: z.string().describe('The description of the client'),
+  audience: z.string().describe('The audience of the client'),
 });
 
 export const TenantSchema = z.object({
@@ -110,7 +111,7 @@ export const TokenSchema = z.object({
 });
 
 export const ValidateTokenResponseSchema = z.object({
-  isValid: z.boolean().describe('Whether the token is valid'),
+  expiresAt: z.number().describe('The expiration date of the token'),
 });
 
 export const ProviderIdSchema = z
@@ -130,14 +131,20 @@ export const GetProvidersFn = z
   .returns(z.promise(z.array(ProviderSchema)));
 export const CreateProviderFn = z.function().args(CreateProviderSchema).returns(z.promise(ProviderSchema));
 export const GetProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(ProviderSchema));
-export const DeleteProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(z.void()));
+export const DeleteProviderFn = z
+  .function()
+  .args(ProviderIdSchema)
+  .returns(z.promise(z.object({})));
 export const GetClientsFn = z
   .function()
   .args(ProviderIdSchema)
   .returns(z.promise(z.array(ClientSchema)));
 export const CreateClientFn = z.function().args(ProviderIdSchema, CreateClientSchema).returns(z.promise(ClientSchema));
 export const GetClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).returns(z.promise(ClientSchema));
-export const DeleteClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).returns(z.promise(z.void()));
+export const DeleteClientFn = z
+  .function()
+  .args(ProviderIdSchema, ClientIdSchema)
+  .returns(z.promise(z.object({})));
 export const CreateTokenFn = z
   .function()
   .args(ProviderIdSchema, ClientIdSchema, CreateTokenSchema)
@@ -148,7 +155,10 @@ export const GetTenantsFn = z
   .returns(z.promise(z.array(TenantSchema)));
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
-export const DeleteTenantFn = z.function().args(TenantIdSchema).returns(z.promise(z.void()));
+export const DeleteTenantFn = z
+  .function()
+  .args(TenantIdSchema)
+  .returns(z.promise(z.object({})));
 export const GetTenantProvidersFn = z
   .function()
   .args(TenantIdSchema)
@@ -164,7 +174,7 @@ export const GetTenantProviderFn = z
 export const DeleteTenantProviderFn = z
   .function()
   .args(TenantIdSchema, TenantProviderIdSchema)
-  .returns(z.promise(z.void()));
+  .returns(z.promise(z.object({})));
 export const ValidateTokenFn = z
   .function()
   .args(TenantIdSchema, z.string())
