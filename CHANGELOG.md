@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.4.0
+
+### Minor Changes
+
+- 0fe13a6: Add option to set SDK baseURL
+
 ## 1.3.2
 
 ### Patch Changes
