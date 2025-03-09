@@ -108,7 +108,7 @@ export const TenantProviderIdSchema = z.string().min(1, { message: 'Tenant provi
 
 export const GetProvidersFn = z
   .function()
-  .args(z.void())
+  .args()
   .returns(z.promise(z.array(ProviderSchema)));
 export const CreateProviderFn = z.function().args(CreateProviderSchema).returns(z.promise(ProviderSchema));
 export const GetProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(ProviderSchema));
@@ -126,7 +126,7 @@ export const CreateTokenFn = z
   .returns(z.promise(TokenSchema));
 export const GetTenantsFn = z
   .function()
-  .args(z.void())
+  .args()
   .returns(z.promise(z.array(TenantSchema)));
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
