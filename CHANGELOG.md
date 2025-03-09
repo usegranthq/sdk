@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.4.1
+
+### Patch Changes
+
+- 0776139: Fix schema payload and return types
+
 ## 1.4.0
 
 ### Minor Changes
