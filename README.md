@@ -108,7 +108,7 @@ try {
 The SDK throws a custom error `UseGrantError` when you face any errors from the API or `ZodError` when you face any errors from the schema validation. You can catch the error and handle it accordingly.
 
 ```ts
-import { UseGrant, UseGrantError, z } from '@usegrant/sdk';
+import { UseGrant, UseGrantError } from '@usegrant/sdk';
 import { z } from 'zod';
 
 const usegrant = new UseGrant('YOUR_API_KEY');
