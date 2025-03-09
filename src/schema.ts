@@ -111,7 +111,7 @@ export const TokenSchema = z.object({
 });
 
 export const ValidateTokenResponseSchema = z.object({
-  expiresAt: z.number().describe('The expiration date of the token'),
+  exp: z.number().describe('The expiration date of the token'),
 });
 
 export const ProviderIdSchema = z

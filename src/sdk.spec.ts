@@ -255,12 +255,13 @@ describe('UseGrant SDK', () => {
     const mockToken = '1234567890';
 
     it('should validate a token', async () => {
+      const mockData = { exp: 1715145600 };
       mockKyInstance.post.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({ expiresAt: 1715145600 })),
+        json: vi.fn(() => Promise.resolve(mockData)),
       }));
 
       const result = await sdk.validateToken('tenant-123', mockToken);
-      expect(result).toEqual({ expiresAt: 1715145600 });
+      expect(result).toEqual(mockData);
       expect(mockKyInstance.post).toHaveBeenCalledWith('v1/tenants/tenant-123/validate', {
         json: { token: mockToken },
       });
