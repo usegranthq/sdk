@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.3.1
+
+### Patch Changes
+
+- f5049ea: Fix void argument types
+
 ## 1.3.0
 
 ### Minor Changes
