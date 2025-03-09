@@ -98,10 +98,36 @@ try {
     name: 'My Provider',
     description: 'My Provider Description',
   });
+} catch {
+  // handle the error
+}
+```
+
+### Error Handling
+
+The SDK throws a custom error `UseGrantError` when you face any errors from the API or `ZodError` when you face any errors from the schema validation. You can catch the error and handle it accordingly.
+
+```ts
+import { UseGrant, UseGrantError, z } from '@usegrant/sdk';
+import { z } from 'zod';
+
+const usegrant = new UseGrant('YOUR_API_KEY');
+
+try {
+  const provider = await usegrant.createProvider({
+    name: 'My Provider',
+    description: 'My Provider Description',
+  });
 } catch (error) {
+  if (error instanceof z.ZodError) {
+    // handle the validation error
+  }
+
   if (error instanceof UseGrantError) {
     // handle the api error
   }
+
+  // handle the unknown error
 }
 ```
 
