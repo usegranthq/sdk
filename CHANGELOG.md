@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.4.2
+
+### Patch Changes
+
+- 96349c6: Fix validate token response schema
+
 ## 1.4.1
 
 ### Patch Changes
