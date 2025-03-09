@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.3.2
+
+### Patch Changes
+
+- 421144e: Add zod description to schemas
+
 ## 1.3.1
 
 ### Patch Changes
