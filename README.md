@@ -82,6 +82,16 @@ const usegrant = new UseGrant('YOUR_API_KEY', {
 });
 ```
 
+### Abort Signal
+
+The SDK supports abort signal to cancel the request. You can pass a `signal` option to the constructor to customize the abort behavior.
+
+```ts
+const usegrant = new UseGrant('YOUR_API_KEY', {
+  signal: AbortSignal.timeout(1000),
+});
+```
+
 Refer to the [ky retry options](https://github.com/sindresorhus/ky?tab=readme-ov-file#retry) for more information about the available options.
 
 ### Error Handling

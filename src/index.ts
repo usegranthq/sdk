@@ -7,6 +7,7 @@ const API_URL = 'https://sdk.usegrant.dev';
 interface UseGrantOptions {
   baseUrl: string;
   retry: RetryOptions;
+  signal: AbortSignal;
 }
 
 export { HTTPError as UseGrantError };
@@ -21,6 +22,7 @@ class UseGrant {
     }
 
     this.api = ky.create({
+      signal: options.signal,
       prefixUrl: options.baseUrl ?? API_URL,
       headers: {
         Authorization: `Bearer ${apiKey}`,
