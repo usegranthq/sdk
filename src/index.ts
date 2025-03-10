@@ -100,7 +100,7 @@ class UseGrant {
   });
 
   validateToken = schema.ValidateTokenFn.implement((tenantId, token) => {
-    return this.#api.post<Types.Token>(`v1/tenants/${tenantId}/validate`, { json: { token } }).json();
+    return this.#api.post<Types.ValidateTokenResponse>(`v1/tenants/${tenantId}/validate`, { json: { token } }).json();
   });
 }
 
