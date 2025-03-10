@@ -4,19 +4,13 @@ import * as schema from './schema';
 
 const API_URL = 'https://sdk.usegrant.dev';
 
-interface UseGrantOptions {
-  baseUrl: string;
-  retry: RetryOptions;
-  signal: AbortSignal;
-}
-
 export { HTTPError as UseGrantError };
 export * from './types';
 
 class UseGrant {
   #api: KyInstance;
 
-  constructor(apiKey: string, options: Partial<UseGrantOptions> = {}) {
+  constructor(apiKey: string, options: Partial<Types.UseGrantOptions> = {}) {
     if (!apiKey) {
       throw new Error('API key is required');
     }
