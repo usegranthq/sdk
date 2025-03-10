@@ -60,7 +60,7 @@ class UseGrant {
   });
 
   deleteClient = schema.DeleteClientFn.implement((providerId, clientId) => {
-    return this.#api.delete(`v1/providers/${providerId}/clients/${clientId}`).json();
+    return this.#api.delete<Types.EmptyResponse>(`v1/providers/${providerId}/clients/${clientId}`).json();
   });
 
   createToken = schema.CreateTokenFn.implement((providerId, clientId, req) => {
@@ -80,7 +80,7 @@ class UseGrant {
   });
 
   deleteTenant = schema.DeleteTenantFn.implement((tenantId) => {
-    return this.#api.delete(`v1/tenants/${tenantId}`).json();
+    return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}`).json();
   });
 
   getTenantProviders = schema.GetTenantProvidersFn.implement((tenantId) => {
@@ -96,7 +96,7 @@ class UseGrant {
   });
 
   deleteTenantProvider = schema.DeleteTenantProviderFn.implement((tenantId, providerId) => {
-    return this.#api.delete(`v1/tenants/${tenantId}/providers/${providerId}`).json();
+    return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
   });
 
   validateToken = schema.ValidateTokenFn.implement((tenantId, token) => {

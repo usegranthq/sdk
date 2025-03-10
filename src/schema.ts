@@ -114,6 +114,8 @@ export const ValidateTokenResponseSchema = z.object({
   exp: z.number().describe('The expiration date of the token'),
 });
 
+export const EmptyResponseSchema = z.object({});
+
 export const ProviderIdSchema = z
   .string()
   .describe('The ID of the provider')
@@ -131,10 +133,7 @@ export const GetProvidersFn = z
   .returns(z.promise(z.array(ProviderSchema)));
 export const CreateProviderFn = z.function().args(CreateProviderSchema).returns(z.promise(ProviderSchema));
 export const GetProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(ProviderSchema));
-export const DeleteProviderFn = z
-  .function()
-  .args(ProviderIdSchema)
-  .returns(z.promise(z.object({})));
+export const DeleteProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(EmptyResponseSchema));
 export const GetClientsFn = z
   .function()
   .args(ProviderIdSchema)
@@ -144,7 +143,7 @@ export const GetClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).r
 export const DeleteClientFn = z
   .function()
   .args(ProviderIdSchema, ClientIdSchema)
-  .returns(z.promise(z.object({})));
+  .returns(z.promise(EmptyResponseSchema));
 export const CreateTokenFn = z
   .function()
   .args(ProviderIdSchema, ClientIdSchema, CreateTokenSchema)
@@ -155,10 +154,7 @@ export const GetTenantsFn = z
   .returns(z.promise(z.array(TenantSchema)));
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
-export const DeleteTenantFn = z
-  .function()
-  .args(TenantIdSchema)
-  .returns(z.promise(z.object({})));
+export const DeleteTenantFn = z.function().args(TenantIdSchema).returns(z.promise(EmptyResponseSchema));
 export const GetTenantProvidersFn = z
   .function()
   .args(TenantIdSchema)
@@ -174,7 +170,7 @@ export const GetTenantProviderFn = z
 export const DeleteTenantProviderFn = z
   .function()
   .args(TenantIdSchema, TenantProviderIdSchema)
-  .returns(z.promise(z.object({})));
+  .returns(z.promise(EmptyResponseSchema));
 export const ValidateTokenFn = z
   .function()
   .args(TenantIdSchema, z.string())
