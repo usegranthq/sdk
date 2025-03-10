@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.5.1
+
+### Patch Changes
+
+- 4b5dca6: Fix validate token response type
+
 ## 1.5.0
 
 ### Minor Changes
