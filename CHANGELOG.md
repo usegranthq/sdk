@@ -1,5 +1,15 @@
 # @usegrant/sdk
 
+## 1.5.0
+
+### Minor Changes
+
+- 946c6d0: Support abort signals
+
+### Patch Changes
+
+- 69f3b8d: Make internal api method private
+
 ## 1.4.2
 
 ### Patch Changes
