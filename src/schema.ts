@@ -28,6 +28,19 @@ export const CreateClientSchema = z.object({
     .max(100, 'Audience must be less than 100 characters long'),
 });
 
+export const AddDomainSchema = z.object({
+  domain: z
+    .string({
+      required_error: 'Please enter a domain name.',
+    })
+    .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, {
+      message: 'Please enter a valid domain name.',
+    })
+    .regex(/^(?!www\.)/, { message: 'Domain name cannot start with www.' })
+    .min(3, { message: 'Domain name must be at least 3 characters long.' })
+    .max(255, { message: 'Domain name must be less than 255 characters.' }),
+});
+
 export const CreateTokenSchema = z.object({
   expiresIn: z
     .number()
@@ -90,6 +103,12 @@ export const ClientSchema = z.object({
   audience: z.string().describe('The audience of the client'),
 });
 
+export const DomainSchema = z.object({
+  id: z.string().describe('The ID of the domain'),
+  domain: z.string().describe('The domain of the domain'),
+  verified: z.boolean().describe('Whether the domain is verified'),
+});
+
 export const TenantSchema = z.object({
   id: z.string().describe('The ID of the tenant'),
   name: z.string().describe('The name of the tenant'),
@@ -121,6 +140,7 @@ export const ProviderIdSchema = z
   .describe('The ID of the provider')
   .min(1, { message: 'Provider ID is required.' });
 export const ClientIdSchema = z.string().describe('The ID of the client').min(1, { message: 'Client ID is required.' });
+export const DomainIdSchema = z.string().describe('The ID of the domain').min(1, { message: 'Domain ID is required.' });
 export const TenantIdSchema = z.string().describe('The ID of the tenant').min(1, { message: 'Tenant ID is required.' });
 export const TenantProviderIdSchema = z
   .string()
@@ -152,6 +172,19 @@ export const GetTenantsFn = z
   .function()
   .args()
   .returns(z.promise(z.array(TenantSchema)));
+
+export const AddDomainFn = z.function().args(ProviderIdSchema, AddDomainSchema).returns(z.promise(DomainSchema));
+export const DeleteDomainFn = z
+  .function()
+  .args(ProviderIdSchema, DomainIdSchema)
+  .returns(z.promise(EmptyResponseSchema));
+export const GetDomainFn = z.function().args(ProviderIdSchema, DomainIdSchema).returns(z.promise(DomainSchema));
+export const GetDomainsFn = z
+  .function()
+  .args(ProviderIdSchema)
+  .returns(z.promise(z.array(DomainSchema)));
+export const VerifyDomainFn = z.function().args(ProviderIdSchema, DomainIdSchema).returns(z.promise(DomainSchema));
+
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
 export const DeleteTenantFn = z.function().args(TenantIdSchema).returns(z.promise(EmptyResponseSchema));

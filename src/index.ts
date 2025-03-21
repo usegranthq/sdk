@@ -61,6 +61,26 @@ class UseGrant {
     return this.#api.post<Types.Token>(`v1/providers/${providerId}/clients/${clientId}/tokens`, { json: req }).json();
   });
 
+  addDomain = schema.AddDomainFn.implement((providerId, req) => {
+    return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains`, { json: req }).json();
+  });
+
+  deleteDomain = schema.DeleteDomainFn.implement((providerId, domainId) => {
+    return this.#api.delete<Types.EmptyResponse>(`v1/providers/${providerId}/domains/${domainId}`).json();
+  });
+
+  getDomain = schema.GetDomainFn.implement((providerId, domainId) => {
+    return this.#api.get<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}`).json();
+  });
+
+  getDomains = schema.GetDomainsFn.implement((providerId) => {
+    return this.#api.get<Types.Domain[]>(`v1/providers/${providerId}/domains`).json();
+  });
+
+  verifyDomain = schema.VerifyDomainFn.implement((providerId, domainId) => {
+    return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}/verify`).json();
+  });
+
   getTenants = schema.GetTenantsFn.implement(() => {
     return this.#api.get<Types.Tenant[]>(`v1/tenants`).json();
   });

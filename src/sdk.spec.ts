@@ -132,6 +132,69 @@ describe('UseGrant SDK', () => {
     });
   });
 
+  describe('Domain Operations', () => {
+    const mockDomain: Types.Domain = {
+      id: 'domain-123',
+      domain: 'test.com',
+      verified: false,
+    };
+
+    const createDomainReq = {
+      domain: 'test.com',
+    };
+
+    it('should add a domain', async () => {
+      mockKyInstance.post.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve(mockDomain)),
+      }));
+
+      const result = await sdk.addDomain('p-123', createDomainReq);
+      expect(result).toEqual(mockDomain);
+      expect(mockKyInstance.post).toHaveBeenCalledWith('v1/providers/p-123/domains', {
+        json: createDomainReq,
+      });
+    });
+
+    it('should get a domain', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve(mockDomain)),
+      }));
+
+      const result = await sdk.getDomain('p-123', 'domain-123');
+      expect(result).toEqual(mockDomain);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123/domains/domain-123');
+    });
+
+    it('should get all domains', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve([mockDomain])),
+      }));
+
+      const result = await sdk.getDomains('p-123');
+      expect(result).toEqual([mockDomain]);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123/domains');
+    });
+
+    it('should verify a domain', async () => {
+      mockKyInstance.post.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve(mockDomain)),
+      }));
+
+      const result = await sdk.verifyDomain('p-123', 'domain-123');
+      expect(result).toEqual(mockDomain);
+      expect(mockKyInstance.post).toHaveBeenCalledWith('v1/providers/p-123/domains/domain-123/verify');
+    });
+
+    it('should delete a domain', async () => {
+      mockKyInstance.delete.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve({})),
+      }));
+
+      await sdk.deleteDomain('p-123', 'domain-123');
+      expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/providers/p-123/domains/domain-123');
+    });
+  });
+
   describe('Token Operations', () => {
     const mockToken: Types.Token = {
       accessToken: 'test-token',
