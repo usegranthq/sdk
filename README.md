@@ -52,6 +52,11 @@ Available methods:
 - `createClient`
 - `getClient`
 - `deleteClient`
+- `addDomain`
+- `getDomain`
+- `getDomains`
+- `verifyDomain`
+- `deleteDomain`
 - `createToken`
 - `createTenant`
 - `getTenant`
