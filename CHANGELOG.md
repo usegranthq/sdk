@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 1.6.0
+
+### Minor Changes
+
+- b0f3752: Add support for domains api
+
 ## 1.5.1
 
 ### Patch Changes

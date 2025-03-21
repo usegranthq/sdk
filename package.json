@@ -1,6 +1,6 @@
 {
   "name": "@usegrant/sdk",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "TypeSafe TypeScript SDK for accessing the UseGrant REST API",
   "license": "Apache-2.0",
   "author": "sibiraj-s",
