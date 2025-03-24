@@ -35,6 +35,29 @@ describe('SDK Initialization', () => {
     });
   });
 
+  it('should initialize with custom options', async () => {
+    const ky = await import('ky');
+    const options = {
+      baseUrl: 'https://custom.domain.com',
+      signal: AbortSignal.timeout(1000),
+      retry: {
+        limit: 3,
+        backoffLimit: 1000,
+      },
+    };
+
+    const sdk = new UseGrant('test-api-key', options);
+    expect(sdk).toBeDefined();
+    expect(ky.default.create).toHaveBeenCalledWith({
+      prefixUrl: options.baseUrl,
+      headers: {
+        Authorization: 'Bearer test-api-key',
+      },
+      signal: options.signal,
+      retry: options.retry,
+    });
+  });
+
   it('should throw error if API key is not provided', () => {
     expect(() => new UseGrant('')).toThrow();
   });
@@ -81,6 +104,16 @@ describe('UseGrant SDK', () => {
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123');
     });
 
+    it('should list all providers', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve([mockProvider])),
+      }));
+
+      const result = await sdk.listProviders();
+      expect(result).toEqual([mockProvider]);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers');
+    });
+
     it('should delete a provider', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
         json: vi.fn(() => Promise.resolve({})),
@@ -124,6 +157,16 @@ describe('UseGrant SDK', () => {
       const result = await sdk.getClient('p-123', 'client-123');
       expect(result).toEqual(mockClient);
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123/clients/client-123');
+    });
+
+    it('should list all clients', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve([mockClient])),
+      }));
+
+      const result = await sdk.listClients('p-123');
+      expect(result).toEqual([mockClient]);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123/clients');
     });
 
     it('should delete a client', async () => {
@@ -175,7 +218,7 @@ describe('UseGrant SDK', () => {
         json: vi.fn(() => Promise.resolve([mockDomain])),
       }));
 
-      const result = await sdk.getDomains('p-123');
+      const result = await sdk.listDomains('p-123');
       expect(result).toEqual([mockDomain]);
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/providers/p-123/domains');
     });
@@ -262,6 +305,16 @@ describe('UseGrant SDK', () => {
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/tenants/tenant-123');
     });
 
+    it('should list all tenants', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve([mockTenant])),
+      }));
+
+      const result = await sdk.listTenants();
+      expect(result).toEqual([mockTenant]);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/tenants');
+    });
+
     it('should delete a tenant', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
         json: vi.fn(() => Promise.resolve({})),
@@ -309,6 +362,16 @@ describe('UseGrant SDK', () => {
       const result = await sdk.getTenantProvider('tenant-123', 'provider-123');
       expect(result).toEqual(mockTenantProvider);
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/tenants/tenant-123/providers/provider-123');
+    });
+
+    it('should list all tenant providers', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => Promise.resolve([mockTenantProvider])),
+      }));
+
+      const result = await sdk.listTenantProviders('tenant-123');
+      expect(result).toEqual([mockTenantProvider]);
+      expect(mockKyInstance.get).toHaveBeenCalledWith('v1/tenants/tenant-123/providers');
     });
 
     it('should delete a tenant provider', async () => {
@@ -379,7 +442,7 @@ describe('UseGrant SDK', () => {
         json: vi.fn(() => Promise.resolve([mockTenantProviderPolicy])),
       }));
 
-      const result = await sdk.getTenantProviderPolicies('tenant-123', 'provider-123');
+      const result = await sdk.listTenantProviderPolicies('tenant-123', 'provider-123');
       expect(result).toEqual([mockTenantProviderPolicy]);
       expect(mockKyInstance.get).toHaveBeenCalledWith('v1/tenants/tenant-123/providers/provider-123/policies');
     });
@@ -422,6 +485,25 @@ describe('UseGrant SDK', () => {
       }));
 
       await expect(sdk.getProvider('p-123')).rejects.toThrow('API Error');
+    });
+
+    it('should handle network errors', async () => {
+      const networkError = new Error('Network Error');
+      mockKyInstance.get.mockImplementation(() => {
+        throw networkError;
+      });
+
+      await expect(sdk.getProvider('p-123')).rejects.toThrow('Network Error');
+    });
+
+    it('should handle invalid JSON responses', async () => {
+      mockKyInstance.get.mockImplementation(() => ({
+        json: vi.fn(() => {
+          throw new Error('Invalid JSON');
+        }),
+      }));
+
+      await expect(sdk.getProvider('p-123')).rejects.toThrow('Invalid JSON');
     });
   });
 });

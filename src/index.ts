@@ -25,7 +25,7 @@ class UseGrant {
     });
   }
 
-  getProviders = schema.GetProvidersFn.implement(() => {
+  listProviders = schema.GetProvidersFn.implement(() => {
     return this.#api.get<Types.Provider[]>('v1/providers').json();
   });
 
@@ -41,7 +41,7 @@ class UseGrant {
     return this.#api.delete(`v1/providers/${id}`).json();
   });
 
-  getClients = schema.GetClientsFn.implement((providerId) => {
+  listClients = schema.GetClientsFn.implement((providerId) => {
     return this.#api.get<Types.Client[]>(`v1/providers/${providerId}/clients`).json();
   });
 
@@ -61,6 +61,10 @@ class UseGrant {
     return this.#api.post<Types.Token>(`v1/providers/${providerId}/clients/${clientId}/tokens`, { json: req }).json();
   });
 
+  listDomains = schema.GetDomainsFn.implement((providerId) => {
+    return this.#api.get<Types.Domain[]>(`v1/providers/${providerId}/domains`).json();
+  });
+
   addDomain = schema.AddDomainFn.implement((providerId, req) => {
     return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains`, { json: req }).json();
   });
@@ -73,15 +77,11 @@ class UseGrant {
     return this.#api.get<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}`).json();
   });
 
-  getDomains = schema.GetDomainsFn.implement((providerId) => {
-    return this.#api.get<Types.Domain[]>(`v1/providers/${providerId}/domains`).json();
-  });
-
   verifyDomain = schema.VerifyDomainFn.implement((providerId, domainId) => {
     return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}/verify`).json();
   });
 
-  getTenants = schema.GetTenantsFn.implement(() => {
+  listTenants = schema.GetTenantsFn.implement(() => {
     return this.#api.get<Types.Tenant[]>(`v1/tenants`).json();
   });
 
@@ -97,7 +97,7 @@ class UseGrant {
     return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}`).json();
   });
 
-  getTenantProviders = schema.GetTenantProvidersFn.implement((tenantId) => {
+  listTenantProviders = schema.GetTenantProvidersFn.implement((tenantId) => {
     return this.#api.get<Types.TenantProvider[]>(`v1/tenants/${tenantId}/providers`).json();
   });
 
@@ -113,15 +113,15 @@ class UseGrant {
     return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
   });
 
-  createTenantProviderPolicy = schema.CreateTenantProviderPolicyFn.implement((tenantId, providerId, req) => {
+  listTenantProviderPolicies = schema.GetTenantProviderPoliciesFn.implement((tenantId, providerId) => {
     return this.#api
-      .post<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies`, { json: req })
+      .get<Types.TenantProviderPolicy[]>(`v1/tenants/${tenantId}/providers/${providerId}/policies`)
       .json();
   });
 
-  getTenantProviderPolicies = schema.GetTenantProviderPoliciesFn.implement((tenantId, providerId) => {
+  createTenantProviderPolicy = schema.CreateTenantProviderPolicyFn.implement((tenantId, providerId, req) => {
     return this.#api
-      .get<Types.TenantProviderPolicy[]>(`v1/tenants/${tenantId}/providers/${providerId}/policies`)
+      .post<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies`, { json: req })
       .json();
   });
 

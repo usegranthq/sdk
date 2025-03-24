@@ -47,23 +47,31 @@ const provider = await usegrant.createProvider({
 Available methods:
 
 - `createProvider`
+- `listProviders`
 - `getProvider`
 - `deleteProvider`
 - `createClient`
+- `listClients`
 - `getClient`
 - `deleteClient`
 - `addDomain`
+- `listDomains`
 - `getDomain`
-- `getDomains`
 - `verifyDomain`
 - `deleteDomain`
 - `createToken`
+- `listTenants`
 - `createTenant`
 - `getTenant`
 - `deleteTenant`
+- `listTenantProviders`
 - `createTenantProvider`
 - `getTenantProvider`
 - `deleteTenantProvider`
+- `listTenantProviderPolicies`
+- `createTenantProviderPolicy`
+- `getTenantProviderPolicy`
+- `deleteTenantProviderPolicy`
 - `validateToken`
 
 Refer to the [API Reference](https://usegrant.dev/docs) for more information about the available methods and their parameters.
