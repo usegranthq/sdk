@@ -1,5 +1,15 @@
 # @usegrant/sdk
 
+## 2.0.0
+
+### Major Changes
+
+- 0199815: Change list methods prefix from get to list
+
+### Minor Changes
+
+- 40d1b78: Add support for tenant provider policy api's
+
 ## 1.6.0
 
 ### Minor Changes
