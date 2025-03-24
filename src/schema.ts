@@ -134,24 +134,32 @@ export const ProviderSchema = z.object({
   id: z.string().describe('The ID of the provider'),
   name: z.string().describe('The name of the provider'),
   description: z.string().describe('The description of the provider'),
+  createdAt: z.string().describe('The creation date of the provider'),
+  updatedAt: z.string().describe('The last update date of the provider'),
 });
 
 export const ClientSchema = z.object({
   id: z.string().describe('The ID of the client'),
   name: z.string().describe('The name of the client'),
   audience: z.string().describe('The audience of the client'),
+  createdAt: z.string().describe('The creation date of the client'),
+  updatedAt: z.string().describe('The last update date of the client'),
 });
 
 export const DomainSchema = z.object({
   id: z.string().describe('The ID of the domain'),
   domain: z.string().describe('The domain of the domain'),
   verified: z.boolean().describe('Whether the domain is verified'),
+  createdAt: z.string().describe('The creation date of the domain'),
+  updatedAt: z.string().describe('The last update date of the domain'),
 });
 
 export const TenantSchema = z.object({
   id: z.string().describe('The ID of the tenant'),
   name: z.string().describe('The name of the tenant'),
   description: z.string().describe('The description of the tenant'),
+  createdAt: z.string().describe('The creation date of the tenant'),
+  updatedAt: z.string().describe('The last update date of the tenant'),
 });
 
 export const TenantProviderSchema = z.object({
@@ -160,6 +168,8 @@ export const TenantProviderSchema = z.object({
   fingerprints: z.array(z.string()).describe('The fingerprints of the tenant provider'),
   audience: z.string().describe('The audience of the tenant provider'),
   earliestIssuanceTimeAllowed: z.number().describe('The earliest issuance time allowed for the tenant provider'),
+  createdAt: z.string().describe('The creation date of the tenant provider'),
+  updatedAt: z.string().describe('The last update date of the tenant provider'),
 });
 
 export const TokenSchema = z.object({
@@ -178,6 +188,8 @@ export const TenantProviderPolicySchema = z.object({
   description: z.string().describe('The description of the tenant provider policy'),
   audience: z.string().describe('The audience of the tenant provider policy'),
   conditions: z.array(ConditionSchema).describe('The conditions of the tenant provider policy'),
+  createdAt: z.string().describe('The creation date of the tenant provider policy'),
+  updatedAt: z.string().describe('The last update date of the tenant provider policy'),
 });
 
 export const EmptyResponseSchema = z.object({});

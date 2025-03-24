@@ -77,6 +77,8 @@ describe('UseGrant SDK', () => {
       id: 'p-123',
       name: 'Test Provider',
       description: 'Test Provider Description',
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     const createProviderReq = {
@@ -130,6 +132,8 @@ describe('UseGrant SDK', () => {
       id: 'client-123',
       name: 'Test Client',
       audience: 'sts.testaudience.com',
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     const createClientReq = {
@@ -185,6 +189,8 @@ describe('UseGrant SDK', () => {
       id: 'domain-123',
       domain: 'test.com',
       verified: false,
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     const createDomainReq = {
@@ -276,6 +282,8 @@ describe('UseGrant SDK', () => {
       id: 'tenant-123',
       name: 'Test Tenant',
       description: 'Test Tenant Description',
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     const createTenantReq = {
@@ -333,6 +341,8 @@ describe('UseGrant SDK', () => {
       fingerprints: ['fingerprint1', 'fingerprint2'],
       audience: 'test-audience',
       earliestIssuanceTimeAllowed: 12,
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     const createTenantProviderReq = {
@@ -398,6 +408,8 @@ describe('UseGrant SDK', () => {
           value: 'test-value',
         },
       ],
+      createdAt: '2024-12-31T23:59:59Z',
+      updatedAt: '2024-12-31T23:59:59Z',
     };
 
     it('should create a tenant provider policy', async () => {
