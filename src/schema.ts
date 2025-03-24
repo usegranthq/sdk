@@ -15,6 +15,22 @@ export const CreateProviderSchema = z.object({
     .max(100, 'Description must be less than 100 characters long'),
 });
 
+export const ConditionSchema = z.object({
+  key: z
+    .string({ required_error: 'Please provide a condition key.' })
+    .describe('The key of the condition')
+    .min(1, { message: 'Please provide a condition key.' })
+    .max(10, { message: 'Condition key must be at most 10 characters long.' }),
+  operator: z
+    .enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike'])
+    .describe('The operator of the condition'),
+  value: z
+    .string({ required_error: 'Please provide a condition value.' })
+    .describe('The value of the condition')
+    .min(1, { message: 'Please provide a condition value.' })
+    .max(100, { message: 'Condition value must be at most 100 characters long.' }),
+});
+
 export const CreateClientSchema = z.object({
   name: z
     .string()
@@ -91,6 +107,29 @@ export const CreateTenantProviderSchema = z.object({
     .max(12, { message: 'Earliest issuance time allowed must be at most 12.' }),
 });
 
+export const CreateTenantProviderPolicySchema = z.object({
+  name: z
+    .string({ required_error: 'Please provide a name for the tenant provider policy.' })
+    .describe('The name of the tenant provider policy')
+    .min(3, 'Name must be at least 3 characters long'),
+  description: z
+    .string({ required_error: 'Please provide a description for the tenant provider policy.' })
+    .describe('The description of the tenant provider policy')
+    .min(10, 'Description must be at least 10 characters long')
+    .max(100, 'Description must be less than 100 characters long'),
+  audience: z
+    .string({ required_error: 'Please provide the audience for the tenant provider policy.' })
+    .describe('The audience of the tenant provider policy')
+    .min(3, { message: 'Audience must be at least 3 characters long.' })
+    .max(100, { message: 'Audience must be at most 100 characters long.' })
+    .trim(),
+  conditions: z
+    .array(ConditionSchema)
+    .describe('The conditions of the tenant provider policy')
+    .min(1, { message: 'At least one condition is required.' })
+    .max(5, { message: 'At most 5 conditions are allowed.' }),
+});
+
 export const ProviderSchema = z.object({
   id: z.string().describe('The ID of the provider'),
   name: z.string().describe('The name of the provider'),
@@ -133,6 +172,14 @@ export const ValidateTokenResponseSchema = z.object({
   exp: z.number().describe('The expiration date of the token'),
 });
 
+export const TenantProviderPolicySchema = z.object({
+  id: z.string().describe('The ID of the tenant provider policy'),
+  name: z.string().describe('The name of the tenant provider policy'),
+  description: z.string().describe('The description of the tenant provider policy'),
+  audience: z.string().describe('The audience of the tenant provider policy'),
+  conditions: z.array(ConditionSchema).describe('The conditions of the tenant provider policy'),
+});
+
 export const EmptyResponseSchema = z.object({});
 
 export const ProviderIdSchema = z
@@ -146,6 +193,10 @@ export const TenantProviderIdSchema = z
   .string()
   .describe('The ID of the tenant provider')
   .min(1, { message: 'Tenant provider ID is required.' });
+export const TenantProviderPolicyIdSchema = z
+  .string()
+  .describe('The ID of the tenant provider policy')
+  .min(1, { message: 'Tenant provider policy ID is required.' });
 
 export const GetProvidersFn = z
   .function()
@@ -204,7 +255,28 @@ export const DeleteTenantProviderFn = z
   .function()
   .args(TenantIdSchema, TenantProviderIdSchema)
   .returns(z.promise(EmptyResponseSchema));
+
+export const CreateTenantProviderPolicyFn = z
+  .function()
+  .args(TenantIdSchema, TenantProviderIdSchema, CreateTenantProviderPolicySchema)
+  .returns(z.promise(TenantProviderPolicySchema));
+
+export const GetTenantProviderPoliciesFn = z
+  .function()
+  .args(TenantIdSchema, TenantProviderIdSchema)
+  .returns(z.promise(z.array(TenantProviderPolicySchema)));
+
+export const GetTenantProviderPolicyFn = z
+  .function()
+  .args(TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema)
+  .returns(z.promise(TenantProviderPolicySchema));
+
+export const DeleteTenantProviderPolicyFn = z
+  .function()
+  .args(TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema)
+  .returns(z.promise(EmptyResponseSchema));
+
 export const ValidateTokenFn = z
   .function()
-  .args(TenantIdSchema, z.string())
+  .args(TenantIdSchema, TenantProviderPolicyIdSchema, z.string())
   .returns(z.promise(ValidateTokenResponseSchema));

@@ -113,8 +113,39 @@ class UseGrant {
     return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
   });
 
-  validateToken = schema.ValidateTokenFn.implement((tenantId, token) => {
-    return this.#api.post<Types.ValidateTokenResponse>(`v1/tenants/${tenantId}/validate`, { json: { token } }).json();
+  createTenantProviderPolicy = schema.CreateTenantProviderPolicyFn.implement((tenantId, providerId, req) => {
+    return this.#api
+      .post<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies`, { json: req })
+      .json();
+  });
+
+  getTenantProviderPolicies = schema.GetTenantProviderPoliciesFn.implement((tenantId, providerId) => {
+    return this.#api
+      .get<Types.TenantProviderPolicy[]>(`v1/tenants/${tenantId}/providers/${providerId}/policies`)
+      .json();
+  });
+
+  getTenantProviderPolicy = schema.GetTenantProviderPolicyFn.implement((tenantId, providerId, policyId) => {
+    return this.#api
+      .get<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies/${policyId}`)
+      .json();
+  });
+
+  deleteTenantProviderPolicy = schema.DeleteTenantProviderPolicyFn.implement((tenantId, providerId, policyId) => {
+    return this.#api
+      .delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}/policies/${policyId}`)
+      .json();
+  });
+
+  validateToken = schema.ValidateTokenFn.implement((tenantId, policyId, token) => {
+    return this.#api
+      .post<Types.ValidateTokenResponse>(`v1/tenants/${tenantId}/validate`, {
+        json: {
+          tenantProviderPolicyId: policyId,
+          token,
+        },
+      })
+      .json();
   });
 }
 
