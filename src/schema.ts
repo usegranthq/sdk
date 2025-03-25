@@ -192,7 +192,9 @@ export const TenantProviderPolicySchema = z.object({
   updatedAt: z.string().describe('The last update date of the tenant provider policy'),
 });
 
-export const EmptyResponseSchema = z.object({});
+// used for 204 response, ky returns empty string for 204 responses
+// https://github.com/sindresorhus/ky/blob/b49cd03d8673ea522a29bae4ef6b4672cf23201b/source/core/Ky.ts#L101
+export const EmptyResponseSchema = z.string();
 
 export const ProviderIdSchema = z
   .string()

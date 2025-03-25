@@ -118,11 +118,11 @@ describe('UseGrant SDK', () => {
 
     it('should delete a provider', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteProvider('p-123');
-      expect(result).toEqual({});
+      expect(result).toEqual('');
       expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/providers/p-123');
     });
   });
@@ -175,11 +175,11 @@ describe('UseGrant SDK', () => {
 
     it('should delete a client', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteClient('p-123', 'client-123');
-      expect(result).toEqual({});
+      expect(result).toEqual('');
       expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/providers/p-123/clients/client-123');
     });
   });
@@ -241,11 +241,11 @@ describe('UseGrant SDK', () => {
 
     it('should delete a domain', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteDomain('p-123', 'domain-123');
-      expect(result).toEqual({});
+      expect(result).toEqual('');
       expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/providers/p-123/domains/domain-123');
     });
   });
@@ -325,11 +325,11 @@ describe('UseGrant SDK', () => {
 
     it('should delete a tenant', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteTenant('tenant-123');
-      expect(result).toEqual({});
+      expect(result).toEqual('');
       expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/tenants/tenant-123');
     });
   });
@@ -386,11 +386,11 @@ describe('UseGrant SDK', () => {
 
     it('should delete a tenant provider', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteTenantProvider('tenant-123', 'provider-123');
-      expect(result).toEqual({});
+      expect(result).toEqual('');
       expect(mockKyInstance.delete).toHaveBeenCalledWith('v1/tenants/tenant-123/providers/provider-123');
     });
   });
@@ -461,14 +461,14 @@ describe('UseGrant SDK', () => {
 
     it('should delete a tenant provider policy', async () => {
       mockKyInstance.delete.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve({})),
+        json: vi.fn(() => Promise.resolve('')),
       }));
 
       const result = await sdk.deleteTenantProviderPolicy('tenant-123', 'provider-123', 'policy-123');
       expect(mockKyInstance.delete).toHaveBeenCalledWith(
         'v1/tenants/tenant-123/providers/provider-123/policies/policy-123',
       );
-      expect(result).toEqual({});
+      expect(result).toEqual('');
     });
   });
 
