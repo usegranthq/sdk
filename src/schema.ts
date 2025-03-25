@@ -196,6 +196,12 @@ export const TenantProviderPolicySchema = z.object({
 // https://github.com/sindresorhus/ky/blob/b49cd03d8673ea522a29bae4ef6b4672cf23201b/source/core/Ky.ts#L101
 export const EmptyResponseSchema = z.string();
 
+export const DomainValidationResponseSchema = z.object({
+  domain: DomainSchema.describe('The domain object'),
+  verified: z.boolean().describe('Whether the domain is verified'),
+  message: z.string().describe('The message about the domain validation'),
+});
+
 export const ProviderIdSchema = z
   .string()
   .describe('The ID of the provider')
@@ -248,7 +254,10 @@ export const GetDomainsFn = z
   .function()
   .args(ProviderIdSchema)
   .returns(z.promise(z.array(DomainSchema)));
-export const VerifyDomainFn = z.function().args(ProviderIdSchema, DomainIdSchema).returns(z.promise(DomainSchema));
+export const VerifyDomainFn = z
+  .function()
+  .args(ProviderIdSchema, DomainIdSchema)
+  .returns(z.promise(DomainValidationResponseSchema));
 
 export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
 export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));

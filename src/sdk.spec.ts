@@ -230,12 +230,18 @@ describe('UseGrant SDK', () => {
     });
 
     it('should verify a domain', async () => {
+      const domainResponse = {
+        domain: mockDomain,
+        verified: true,
+        message: 'Domain verified',
+      };
+
       mockKyInstance.post.mockImplementation(() => ({
-        json: vi.fn(() => Promise.resolve(mockDomain)),
+        json: vi.fn(() => Promise.resolve(domainResponse)),
       }));
 
       const result = await sdk.verifyDomain('p-123', 'domain-123');
-      expect(result).toEqual(mockDomain);
+      expect(result).toEqual(domainResponse);
       expect(mockKyInstance.post).toHaveBeenCalledWith('v1/providers/p-123/domains/domain-123/verify');
     });
 
