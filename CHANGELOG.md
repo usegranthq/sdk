@@ -1,5 +1,12 @@
 # @usegrant/sdk
 
+## 2.0.2
+
+### Patch Changes
+
+- 4cb9219: Fix domain verification response
+- a1af83a: Fix return type for delete requests
+
 ## 2.0.1
 
 ### Patch Changes
