@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { RetryOptions } from 'ky';
 
 import * as schema from './schema';

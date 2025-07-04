@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 const FOURTY_EIGHT_HOURS = 48 * 60 * 60 * 1000;
 
@@ -17,18 +17,18 @@ export const CreateProviderSchema = z.object({
 
 export const ConditionSchema = z.object({
   key: z
-    .string({ required_error: 'Please provide a condition key.' })
+    .string('Please provide a condition key.')
     .describe('The key of the condition')
-    .min(1, { message: 'Please provide a condition key.' })
-    .max(10, { message: 'Condition key must be at most 10 characters long.' }),
+    .min(1, 'Please provide a condition key.')
+    .max(10, 'Condition key must be at most 10 characters long.'),
   operator: z
     .enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike'])
     .describe('The operator of the condition'),
   value: z
-    .string({ required_error: 'Please provide a condition value.' })
+    .string('Please provide a condition value.')
     .describe('The value of the condition')
-    .min(1, { message: 'Please provide a condition value.' })
-    .max(100, { message: 'Condition value must be at most 100 characters long.' }),
+    .min(1, 'Please provide a condition value.')
+    .max(100, 'Condition value must be at most 100 characters long.'),
 });
 
 export const CreateClientSchema = z.object({
@@ -46,15 +46,11 @@ export const CreateClientSchema = z.object({
 
 export const AddDomainSchema = z.object({
   domain: z
-    .string({
-      required_error: 'Please enter a domain name.',
-    })
-    .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, {
-      message: 'Please enter a valid domain name.',
-    })
-    .regex(/^(?!www\.)/, { message: 'Domain name cannot start with www.' })
-    .min(3, { message: 'Domain name must be at least 3 characters long.' })
-    .max(255, { message: 'Domain name must be less than 255 characters.' }),
+    .string('Please enter a domain name.')
+    .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, 'Please enter a valid domain name.')
+    .regex(/^(?!www\.)/, 'Domain name cannot start with www.')
+    .min(3, 'Domain name must be at least 3 characters long.')
+    .max(255, 'Domain name must be less than 255 characters long.'),
 });
 
 export const CreateTokenSchema = z.object({
@@ -79,55 +75,53 @@ export const CreateTenantSchema = z.object({
 
 export const CreateTenantProviderSchema = z.object({
   url: z
-    .string({ required_error: 'Please provide a provider URL.' })
+    .url('Please provide a valid URL.')
     .describe('The URL of the provider')
-    .trim()
-    .url({ message: 'Please provide a valid URL.' })
     .transform((url) => url.replace(/\/$/, '')),
   fingerprints: z
     .array(
       z
-        .string({ required_error: 'Please provide the provider fingerprint.' })
+        .string('Please provide the provider fingerprint.')
         .describe('The fingerprint of the provider')
         .min(32, { message: 'Fingerprint must be at least 32 characters long.' })
         .max(64, { message: 'Fingerprint must be at most 64 characters long.' }),
     )
-    .min(1, { message: 'At least one fingerprint is required.' })
-    .max(5, { message: 'At most 5 fingerprints are allowed.' }),
+    .min(1, 'At least one fingerprint is required.')
+    .max(5, 'At most 5 fingerprints are allowed.'),
   audience: z
-    .string({ required_error: 'Please provide the provider audience.' })
+    .string('Please provide the provider audience.')
     .describe('The audience of the provider')
-    .min(3, { message: 'Provider audience must be at least 3 characters long.' })
-    .max(100, { message: 'Provider audience must be at most 100 characters long.' })
+    .min(3, 'Provider audience must be at least 3 characters long.')
+    .max(100, 'Provider audience must be at most 100 characters long.')
     .trim(),
-  earliestIssuanceTimeAllowed: z
-    .number({ required_error: 'Please provide the earliest issuance time allowed.', coerce: true })
+  earliestIssuanceTimeAllowed: z.coerce
+    .number('Please provide the earliest issuance time allowed.')
     .describe('The earliest issuance time allowed in hours')
-    .min(0, { message: 'Earliest issuance time allowed must be at least 0.' })
-    .max(12, { message: 'Earliest issuance time allowed must be at most 12.' }),
+    .min(0, 'Earliest issuance time allowed must be at least 0.')
+    .max(12, 'Earliest issuance time allowed must be at most 12.'),
 });
 
 export const CreateTenantProviderPolicySchema = z.object({
   name: z
-    .string({ required_error: 'Please provide a name for the tenant provider policy.' })
+    .string('Please provide a name for the tenant provider policy.')
     .describe('The name of the tenant provider policy')
     .min(3, 'Name must be at least 3 characters long'),
   description: z
-    .string({ required_error: 'Please provide a description for the tenant provider policy.' })
+    .string('Please provide a description for the tenant provider policy.')
     .describe('The description of the tenant provider policy')
     .min(10, 'Description must be at least 10 characters long')
     .max(100, 'Description must be less than 100 characters long'),
   audience: z
-    .string({ required_error: 'Please provide the audience for the tenant provider policy.' })
+    .string('Please provide the audience for the tenant provider policy.')
     .describe('The audience of the tenant provider policy')
-    .min(3, { message: 'Audience must be at least 3 characters long.' })
-    .max(100, { message: 'Audience must be at most 100 characters long.' })
+    .min(3, 'Audience must be at least 3 characters long.')
+    .max(100, 'Audience must be at most 100 characters long.')
     .trim(),
   conditions: z
     .array(ConditionSchema)
     .describe('The conditions of the tenant provider policy')
-    .min(1, { message: 'At least one condition is required.' })
-    .max(5, { message: 'At most 5 conditions are allowed.' }),
+    .min(1, 'At least one condition is required.')
+    .max(5, 'At most 5 conditions are allowed.'),
 });
 
 export const ProviderSchema = z.object({
@@ -218,88 +212,114 @@ export const TenantProviderPolicyIdSchema = z
   .describe('The ID of the tenant provider policy')
   .min(1, { message: 'Tenant provider policy ID is required.' });
 
-export const GetProvidersFn = z
-  .function()
-  .args()
-  .returns(z.promise(z.array(ProviderSchema)));
-export const CreateProviderFn = z.function().args(CreateProviderSchema).returns(z.promise(ProviderSchema));
-export const GetProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(ProviderSchema));
-export const DeleteProviderFn = z.function().args(ProviderIdSchema).returns(z.promise(EmptyResponseSchema));
-export const GetClientsFn = z
-  .function()
-  .args(ProviderIdSchema)
-  .returns(z.promise(z.array(ClientSchema)));
-export const CreateClientFn = z.function().args(ProviderIdSchema, CreateClientSchema).returns(z.promise(ClientSchema));
-export const GetClientFn = z.function().args(ProviderIdSchema, ClientIdSchema).returns(z.promise(ClientSchema));
-export const DeleteClientFn = z
-  .function()
-  .args(ProviderIdSchema, ClientIdSchema)
-  .returns(z.promise(EmptyResponseSchema));
-export const CreateTokenFn = z
-  .function()
-  .args(ProviderIdSchema, ClientIdSchema, CreateTokenSchema)
-  .returns(z.promise(TokenSchema));
-export const GetTenantsFn = z
-  .function()
-  .args()
-  .returns(z.promise(z.array(TenantSchema)));
+export const GetProvidersFn = z.function({
+  output: z.promise(z.array(ProviderSchema)),
+});
+export const CreateProviderFn = z.function({
+  input: [CreateProviderSchema],
+  output: z.promise(ProviderSchema),
+});
+export const GetProviderFn = z.function({
+  input: [ProviderIdSchema],
+  output: z.promise(ProviderSchema),
+});
+export const DeleteProviderFn = z.function({
+  input: [ProviderIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
+export const GetClientsFn = z.function({
+  input: [ProviderIdSchema],
+  output: z.promise(z.array(ClientSchema)),
+});
+export const CreateClientFn = z.function({
+  input: [ProviderIdSchema, CreateClientSchema],
+  output: z.promise(ClientSchema),
+});
+export const GetClientFn = z.function({
+  input: [ProviderIdSchema, ClientIdSchema],
+  output: z.promise(ClientSchema),
+});
+export const DeleteClientFn = z.function({
+  input: [ProviderIdSchema, ClientIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
+export const CreateTokenFn = z.function({
+  input: [ProviderIdSchema, ClientIdSchema, CreateTokenSchema],
+  output: z.promise(TokenSchema),
+});
+export const GetTenantsFn = z.function({
+  input: [],
+  output: z.promise(z.array(TenantSchema)),
+});
 
-export const AddDomainFn = z.function().args(ProviderIdSchema, AddDomainSchema).returns(z.promise(DomainSchema));
-export const DeleteDomainFn = z
-  .function()
-  .args(ProviderIdSchema, DomainIdSchema)
-  .returns(z.promise(EmptyResponseSchema));
-export const GetDomainFn = z.function().args(ProviderIdSchema, DomainIdSchema).returns(z.promise(DomainSchema));
-export const GetDomainsFn = z
-  .function()
-  .args(ProviderIdSchema)
-  .returns(z.promise(z.array(DomainSchema)));
-export const VerifyDomainFn = z
-  .function()
-  .args(ProviderIdSchema, DomainIdSchema)
-  .returns(z.promise(DomainValidationResponseSchema));
+export const AddDomainFn = z.function({
+  input: [ProviderIdSchema, AddDomainSchema],
+  output: z.promise(DomainSchema),
+});
+export const DeleteDomainFn = z.function({
+  input: [ProviderIdSchema, DomainIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
+export const GetDomainFn = z.function({
+  input: [ProviderIdSchema, DomainIdSchema],
+  output: z.promise(DomainSchema),
+});
+export const GetDomainsFn = z.function({
+  input: [ProviderIdSchema],
+  output: z.promise(z.array(DomainSchema)),
+});
+export const VerifyDomainFn = z.function({
+  input: [ProviderIdSchema, DomainIdSchema],
+  output: z.promise(DomainValidationResponseSchema),
+});
 
-export const CreateTenantFn = z.function().args(CreateTenantSchema).returns(z.promise(TenantSchema));
-export const GetTenantFn = z.function().args(TenantIdSchema).returns(z.promise(TenantSchema));
-export const DeleteTenantFn = z.function().args(TenantIdSchema).returns(z.promise(EmptyResponseSchema));
-export const GetTenantProvidersFn = z
-  .function()
-  .args(TenantIdSchema)
-  .returns(z.promise(z.array(TenantProviderSchema)));
-export const CreateTenantProviderFn = z
-  .function()
-  .args(TenantIdSchema, CreateTenantProviderSchema)
-  .returns(z.promise(TenantProviderSchema));
-export const GetTenantProviderFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema)
-  .returns(z.promise(TenantProviderSchema));
-export const DeleteTenantProviderFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema)
-  .returns(z.promise(EmptyResponseSchema));
+export const CreateTenantFn = z.function({
+  input: [CreateTenantSchema],
+  output: z.promise(TenantSchema),
+});
+export const GetTenantFn = z.function({
+  input: [TenantIdSchema],
+  output: z.promise(TenantSchema),
+});
+export const DeleteTenantFn = z.function({
+  input: [TenantIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
+export const GetTenantProvidersFn = z.function({
+  input: [TenantIdSchema],
+  output: z.promise(z.array(TenantProviderSchema)),
+});
+export const CreateTenantProviderFn = z.function({
+  input: [TenantIdSchema, CreateTenantProviderSchema],
+  output: z.promise(TenantProviderSchema),
+});
+export const GetTenantProviderFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema],
+  output: z.promise(TenantProviderSchema),
+});
+export const DeleteTenantProviderFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
 
-export const CreateTenantProviderPolicyFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema, CreateTenantProviderPolicySchema)
-  .returns(z.promise(TenantProviderPolicySchema));
+export const CreateTenantProviderPolicyFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema, CreateTenantProviderPolicySchema],
+  output: z.promise(TenantProviderPolicySchema),
+});
+export const GetTenantProviderPoliciesFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema],
+  output: z.promise(z.array(TenantProviderPolicySchema)),
+});
+export const GetTenantProviderPolicyFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema],
+  output: z.promise(TenantProviderPolicySchema),
+});
+export const DeleteTenantProviderPolicyFn = z.function({
+  input: [TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema],
+  output: z.promise(EmptyResponseSchema),
+});
 
-export const GetTenantProviderPoliciesFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema)
-  .returns(z.promise(z.array(TenantProviderPolicySchema)));
-
-export const GetTenantProviderPolicyFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema)
-  .returns(z.promise(TenantProviderPolicySchema));
-
-export const DeleteTenantProviderPolicyFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderIdSchema, TenantProviderPolicyIdSchema)
-  .returns(z.promise(EmptyResponseSchema));
-
-export const ValidateTokenFn = z
-  .function()
-  .args(TenantIdSchema, TenantProviderPolicyIdSchema, z.string())
-  .returns(z.promise(ValidateTokenResponseSchema));
+export const ValidateTokenFn = z.function({
+  input: [TenantIdSchema, TenantProviderPolicyIdSchema, z.string()],
+  output: z.promise(ValidateTokenResponseSchema),
+});

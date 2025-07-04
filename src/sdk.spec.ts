@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import UseGrant from './index';

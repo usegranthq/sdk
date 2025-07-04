@@ -1,4 +1,4 @@
-import ky, { KyInstance, RetryOptions, HTTPError } from 'ky';
+import ky, { KyInstance, HTTPError } from 'ky';
 import * as Types from './types';
 import * as schema from './schema';
 
@@ -25,119 +25,119 @@ class UseGrant {
     });
   }
 
-  listProviders = schema.GetProvidersFn.implement(() => {
+  listProviders = schema.GetProvidersFn.implementAsync(() => {
     return this.#api.get<Types.Provider[]>('v1/providers').json();
   });
 
-  createProvider = schema.CreateProviderFn.implement((req) => {
+  createProvider = schema.CreateProviderFn.implementAsync((req) => {
     return this.#api.post<Types.Provider>('v1/providers', { json: req }).json();
   });
 
-  getProvider = schema.GetProviderFn.implement((id) => {
+  getProvider = schema.GetProviderFn.implementAsync((id) => {
     return this.#api.get<Types.Provider>(`v1/providers/${id}`).json();
   });
 
-  deleteProvider = schema.DeleteProviderFn.implement((id) => {
+  deleteProvider = schema.DeleteProviderFn.implementAsync((id) => {
     return this.#api.delete(`v1/providers/${id}`).json();
   });
 
-  listClients = schema.GetClientsFn.implement((providerId) => {
+  listClients = schema.GetClientsFn.implementAsync((providerId) => {
     return this.#api.get<Types.Client[]>(`v1/providers/${providerId}/clients`).json();
   });
 
-  createClient = schema.CreateClientFn.implement((providerId, req) => {
+  createClient = schema.CreateClientFn.implementAsync((providerId, req) => {
     return this.#api.post<Types.Client>(`v1/providers/${providerId}/clients`, { json: req }).json();
   });
 
-  getClient = schema.GetClientFn.implement((providerId, clientId) => {
+  getClient = schema.GetClientFn.implementAsync((providerId, clientId) => {
     return this.#api.get<Types.Client>(`v1/providers/${providerId}/clients/${clientId}`).json();
   });
 
-  deleteClient = schema.DeleteClientFn.implement((providerId, clientId) => {
+  deleteClient = schema.DeleteClientFn.implementAsync((providerId, clientId) => {
     return this.#api.delete<Types.EmptyResponse>(`v1/providers/${providerId}/clients/${clientId}`).json();
   });
 
-  createToken = schema.CreateTokenFn.implement((providerId, clientId, req) => {
+  createToken = schema.CreateTokenFn.implementAsync((providerId, clientId, req) => {
     return this.#api.post<Types.Token>(`v1/providers/${providerId}/clients/${clientId}/tokens`, { json: req }).json();
   });
 
-  listDomains = schema.GetDomainsFn.implement((providerId) => {
+  listDomains = schema.GetDomainsFn.implementAsync((providerId) => {
     return this.#api.get<Types.Domain[]>(`v1/providers/${providerId}/domains`).json();
   });
 
-  addDomain = schema.AddDomainFn.implement((providerId, req) => {
+  addDomain = schema.AddDomainFn.implementAsync((providerId, req) => {
     return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains`, { json: req }).json();
   });
 
-  deleteDomain = schema.DeleteDomainFn.implement((providerId, domainId) => {
+  deleteDomain = schema.DeleteDomainFn.implementAsync((providerId, domainId) => {
     return this.#api.delete<Types.EmptyResponse>(`v1/providers/${providerId}/domains/${domainId}`).json();
   });
 
-  getDomain = schema.GetDomainFn.implement((providerId, domainId) => {
+  getDomain = schema.GetDomainFn.implementAsync((providerId, domainId) => {
     return this.#api.get<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}`).json();
   });
 
-  verifyDomain = schema.VerifyDomainFn.implement((providerId, domainId) => {
+  verifyDomain = schema.VerifyDomainFn.implementAsync((providerId, domainId) => {
     return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}/verify`).json();
   });
 
-  listTenants = schema.GetTenantsFn.implement(() => {
+  listTenants = schema.GetTenantsFn.implementAsync(() => {
     return this.#api.get<Types.Tenant[]>(`v1/tenants`).json();
   });
 
-  createTenant = schema.CreateTenantFn.implement((req) => {
+  createTenant = schema.CreateTenantFn.implementAsync((req) => {
     return this.#api.post<Types.Tenant>('v1/tenants', { json: req }).json();
   });
 
-  getTenant = schema.GetTenantFn.implement((tenantId) => {
+  getTenant = schema.GetTenantFn.implementAsync((tenantId) => {
     return this.#api.get<Types.Tenant>(`v1/tenants/${tenantId}`).json();
   });
 
-  deleteTenant = schema.DeleteTenantFn.implement((tenantId) => {
+  deleteTenant = schema.DeleteTenantFn.implementAsync((tenantId) => {
     return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}`).json();
   });
 
-  listTenantProviders = schema.GetTenantProvidersFn.implement((tenantId) => {
+  listTenantProviders = schema.GetTenantProvidersFn.implementAsync((tenantId) => {
     return this.#api.get<Types.TenantProvider[]>(`v1/tenants/${tenantId}/providers`).json();
   });
 
-  createTenantProvider = schema.CreateTenantProviderFn.implement((tenantId, req) => {
+  createTenantProvider = schema.CreateTenantProviderFn.implementAsync((tenantId, req) => {
     return this.#api.post<Types.Provider>(`v1/tenants/${tenantId}/providers`, { json: req }).json();
   });
 
-  getTenantProvider = schema.GetTenantProviderFn.implement((tenantId, providerId) => {
+  getTenantProvider = schema.GetTenantProviderFn.implementAsync((tenantId, providerId) => {
     return this.#api.get<Types.TenantProvider>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
   });
 
-  deleteTenantProvider = schema.DeleteTenantProviderFn.implement((tenantId, providerId) => {
+  deleteTenantProvider = schema.DeleteTenantProviderFn.implementAsync((tenantId, providerId) => {
     return this.#api.delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}`).json();
   });
 
-  listTenantProviderPolicies = schema.GetTenantProviderPoliciesFn.implement((tenantId, providerId) => {
+  listTenantProviderPolicies = schema.GetTenantProviderPoliciesFn.implementAsync((tenantId, providerId) => {
     return this.#api
       .get<Types.TenantProviderPolicy[]>(`v1/tenants/${tenantId}/providers/${providerId}/policies`)
       .json();
   });
 
-  createTenantProviderPolicy = schema.CreateTenantProviderPolicyFn.implement((tenantId, providerId, req) => {
+  createTenantProviderPolicy = schema.CreateTenantProviderPolicyFn.implementAsync((tenantId, providerId, req) => {
     return this.#api
       .post<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies`, { json: req })
       .json();
   });
 
-  getTenantProviderPolicy = schema.GetTenantProviderPolicyFn.implement((tenantId, providerId, policyId) => {
+  getTenantProviderPolicy = schema.GetTenantProviderPolicyFn.implementAsync((tenantId, providerId, policyId) => {
     return this.#api
       .get<Types.TenantProviderPolicy>(`v1/tenants/${tenantId}/providers/${providerId}/policies/${policyId}`)
       .json();
   });
 
-  deleteTenantProviderPolicy = schema.DeleteTenantProviderPolicyFn.implement((tenantId, providerId, policyId) => {
+  deleteTenantProviderPolicy = schema.DeleteTenantProviderPolicyFn.implementAsync((tenantId, providerId, policyId) => {
     return this.#api
       .delete<Types.EmptyResponse>(`v1/tenants/${tenantId}/providers/${providerId}/policies/${policyId}`)
       .json();
   });
 
-  validateToken = schema.ValidateTokenFn.implement((tenantId, policyId, token) => {
+  validateToken = schema.ValidateTokenFn.implementAsync((tenantId, policyId, token) => {
     return this.#api
       .post<Types.ValidateTokenResponse>(`v1/tenants/${tenantId}/validate`, {
         json: {
