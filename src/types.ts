@@ -11,6 +11,7 @@ export type TenantProvider = z.infer<typeof schema.TenantProviderSchema>;
 export type ValidateTokenResponse = z.infer<typeof schema.ValidateTokenResponseSchema>;
 export type EmptyResponse = z.infer<typeof schema.EmptyResponseSchema>;
 export type Domain = z.infer<typeof schema.DomainSchema>;
+export type DomainValidationResponse = z.infer<typeof schema.DomainValidationResponseSchema>;
 export type Condition = z.infer<typeof schema.ConditionSchema>;
 export type TenantProviderPolicy = z.infer<typeof schema.TenantProviderPolicySchema>;
 

@@ -230,7 +230,7 @@ describe('UseGrant SDK', () => {
     });
 
     it('should verify a domain', async () => {
-      const domainResponse = {
+      const domainResponse: Types.DomainValidationResponse = {
         domain: mockDomain,
         verified: true,
         message: 'Domain verified',

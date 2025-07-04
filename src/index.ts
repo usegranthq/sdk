@@ -78,7 +78,9 @@ class UseGrant {
   });
 
   verifyDomain = schema.VerifyDomainFn.implementAsync((providerId, domainId) => {
-    return this.#api.post<Types.Domain>(`v1/providers/${providerId}/domains/${domainId}/verify`).json();
+    return this.#api
+      .post<Types.DomainValidationResponse>(`v1/providers/${providerId}/domains/${domainId}/verify`)
+      .json();
   });
 
   listTenants = schema.GetTenantsFn.implementAsync(() => {
@@ -102,7 +104,7 @@ class UseGrant {
   });
 
   createTenantProvider = schema.CreateTenantProviderFn.implementAsync((tenantId, req) => {
-    return this.#api.post<Types.Provider>(`v1/tenants/${tenantId}/providers`, { json: req }).json();
+    return this.#api.post<Types.TenantProvider>(`v1/tenants/${tenantId}/providers`, { json: req }).json();
   });
 
   getTenantProvider = schema.GetTenantProviderFn.implementAsync((tenantId, providerId) => {
