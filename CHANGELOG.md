@@ -4,12 +4,12 @@
 
 ### Minor Changes
 
-- cc321aa: Migrate from tsup to tsdown
-- cc321aa: Update to zod v4
+- 599098d: Migrate from tsup to tsdown
+- e810a99: Update to zod v4
 
 ### Patch Changes
 
-- cc321aa: Fix types
+- 65c7ea8: Fix types
 
 ## 2.0.2
 
