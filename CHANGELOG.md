@@ -1,5 +1,16 @@
 # @usegrant/sdk
 
+## 2.1.0
+
+### Minor Changes
+
+- cc321aa: Migrate from tsup to tsdown
+- cc321aa: Update to zod v4
+
+### Patch Changes
+
+- cc321aa: Fix types
+
 ## 2.0.2
 
 ### Patch Changes
