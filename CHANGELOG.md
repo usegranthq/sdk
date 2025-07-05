@@ -1,5 +1,16 @@
 # @usegrant/sdk
 
+## 2.1.0
+
+### Minor Changes
+
+- 599098d: Migrate from tsup to tsdown
+- e810a99: Update to zod v4
+
+### Patch Changes
+
+- 65c7ea8: Fix types
+
 ## 2.0.2
 
 ### Patch Changes
