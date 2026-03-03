@@ -47,7 +47,7 @@ export const CreateClientSchema = z.object({
 export const AddDomainSchema = z.object({
   domain: z
     .string('Please enter a domain name.')
-    .regex(/^(?!:\/\/)([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+[a-zA-Z]{2,}$/, 'Please enter a valid domain name.')
+    .regex(/^(?!:\/\/)([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/, 'Please enter a valid domain name.')
     .regex(/^(?!www\.)/, 'Domain name cannot start with www.')
     .min(3, 'Domain name must be at least 3 characters long.')
     .max(255, 'Domain name must be less than 255 characters long.'),
