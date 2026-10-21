@@ -54,6 +54,7 @@
     "access": "public"
   },
   "scripts": {
+    "generate": "npx -y -p typescript@6.0.3 -p @hey-api/openapi-ts@0.99.0 openapi-ts",
     "test": "vitest",
     "build": "tsdown",
     "postbuild": "publint",

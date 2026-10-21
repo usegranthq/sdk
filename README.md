@@ -29,65 +29,46 @@ The SDK uses the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fe
 
 ## Usage
 
-The following example shows how to create a provider using the SDK.
+Set your API key on the client once, then create the SDK and call the API.
 
 ```ts
-import UseGrant from '@usegrant/sdk';
+import UseGrant, { client } from '@usegrant/sdk';
 
-// Initialize the SDK
-const usegrant = new UseGrant('YOUR_API_KEY');
+// Configure the client with your API key
+client.setConfig({ auth: 'YOUR_API_KEY' });
+
+const usegrant = new UseGrant();
 
 // Create a provider
-const provider = await usegrant.createProvider({
+const { data: provider } = await usegrant.providers.create({
   name: 'My Provider',
   description: 'My Provider Description',
 });
+
+// Create a client for the provider
+const { data: providerClient } = await usegrant.providers.clients.create({
+  providerId: provider.id,
+  name: 'My Client',
+  audience: 'my-audience',
+});
 ```
 
-Available methods:
-
-- `createProvider`
-- `listProviders`
-- `getProvider`
-- `deleteProvider`
-- `createClient`
-- `listClients`
-- `getClient`
-- `deleteClient`
-- `addDomain`
-- `listDomains`
-- `getDomain`
-- `verifyDomain`
-- `deleteDomain`
-- `createToken`
-- `listTenants`
-- `createTenant`
-- `getTenant`
-- `deleteTenant`
-- `listTenantProviders`
-- `createTenantProvider`
-- `getTenantProvider`
-- `deleteTenantProvider`
-- `listTenantProviderPolicies`
-- `createTenantProviderPolicy`
-- `getTenantProviderPolicy`
-- `deleteTenantProviderPolicy`
-- `validateToken`
+The SDK is generated from the [OpenAPI spec](https://sdk.usegrant.dev/open-api.json), so every API operation is available as a method grouped by resource, for example `usegrant.providers.list()`, `usegrant.providers.domains.verify()`, `usegrant.tenants.providers.policies.create()` or `usegrant.tenants.tokens.validate()`. Each method takes the path parameters and request body fields of the operation in a single object and resolves with `{ data, request, response }`.
 
 Refer to the [API Reference](https://usegrant.dev/docs) for more information about the available methods and their parameters.
 
 ## TypeScript Support
 
-The SDK is written in TypeScript and provides full type safety out of the box. All methods and their parameters are fully typed:
+The SDK is written in TypeScript and provides full type safety out of the box. All methods, their parameters and responses are fully typed, and the request and response types of every operation are exported, for example `ProvidersCreateData` and `ProvidersCreateResponse`.
 
 ## Configuration
 
+The SDK uses the [ky](https://github.com/sindresorhus/ky) library under the hood. Options are set on the client with `client.setConfig()`.
+
 ### Retry Options
 
-The SDK uses the [ky](https://github.com/sindresorhus/ky) library under the hood, which supports retry options. You can pass a `retry` option to the constructor to customize the retry behavior.
-
 ```ts
-const usegrant = new UseGrant('YOUR_API_KEY', {
+client.setConfig({
   retry: {
     limit: 3,
     backoffLimit: 1000,
@@ -95,49 +76,45 @@ const usegrant = new UseGrant('YOUR_API_KEY', {
 });
 ```
 
-### Abort Signal
+Refer to the [ky retry options](https://github.com/sindresorhus/ky?tab=readme-ov-file#retry) for more information about the available options.
 
-The SDK supports abort signal to cancel the request. You can pass a `signal` option to the constructor to customize the abort behavior.
+### Abort Signal and Timeout
 
 ```ts
-const usegrant = new UseGrant('YOUR_API_KEY', {
+client.setConfig({
   signal: AbortSignal.timeout(1000),
+  timeout: 5000,
 });
 ```
 
-Refer to the [ky retry options](https://github.com/sindresorhus/ky?tab=readme-ov-file#retry) for more information about the available options.
+Avoid overriding `kyOptions.hooks`, the SDK uses it to convert API errors to `UseGrantError`.
 
-### Error Handling
+### Multiple API Keys
 
-The SDK throws a custom error `UseGrantError` when you face any errors from the API. You can catch the error and handle it accordingly.
+`client` is shared by every `UseGrant` instance. To use a different API key or base URL for an instance, pass it its own client:
 
 ```ts
-import { UseGrant, UseGrantError } from '@usegrant/sdk';
+import UseGrant, { client, createClient } from '@usegrant/sdk';
 
-const usegrant = new UseGrant('YOUR_API_KEY');
-
-try {
-  const provider = await usegrant.createProvider({
-    name: 'My Provider',
-    description: 'My Provider Description',
-  });
-} catch {
-  // handle the error
-}
+const usegrant = new UseGrant({
+  client: createClient({ ...client.getConfig(), auth: 'OTHER_API_KEY' }),
+});
 ```
 
-### Error Handling
+Spreading `client.getConfig()` keeps the SDK defaults such as the base URL and error handling.
 
-The SDK throws a custom error `UseGrantError` when you face any errors from the API or `ZodError` when you face any errors from the schema validation. You can catch the error and handle it accordingly.
+## Error Handling
+
+The SDK throws a `UseGrantError` when the API responds with an error and a `ZodError` when the request or response fails the schema validation. You can catch the error and handle it accordingly.
 
 ```ts
-import { UseGrant, UseGrantError } from '@usegrant/sdk';
+import UseGrant, { UseGrantError } from '@usegrant/sdk';
 import { z } from 'zod';
 
-const usegrant = new UseGrant('YOUR_API_KEY');
+const usegrant = new UseGrant();
 
 try {
-  const provider = await usegrant.createProvider({
+  const { data: provider } = await usegrant.providers.create({
     name: 'My Provider',
     description: 'My Provider Description',
   });
@@ -148,6 +125,7 @@ try {
 
   if (error instanceof UseGrantError) {
     // handle the api error
+    console.log(error.status, error.code, error.message);
   }
 
   // handle the unknown error
@@ -165,6 +143,8 @@ We welcome contributions! Here's how you can help:
 5. Commit your changes (`git commit -m 'Add some amazing feature'`)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
+
+The API client in `src/generated` is generated from the [OpenAPI spec](https://sdk.usegrant.dev/open-api.json) with [Hey API](https://heyapi.dev). Run `npm run generate` to regenerate it, do not edit the generated files by hand.
 
 Please make sure to update tests as appropriate and follow the existing coding style.
 
