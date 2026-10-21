@@ -1,5 +1,11 @@
 # @usegrant/sdk
 
+## 3.1.0
+
+### Minor Changes
+
+- 7d5ec57: Add descriptions from the OpenAPI spec to the generated zod schemas
+
 ## 3.0.0
 
 ### Major Changes
