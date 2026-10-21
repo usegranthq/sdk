@@ -3,6 +3,7 @@ export default {
   output: {
     path: 'src/generated',
     postProcess: ['oxfmt'],
+    source: true,
   },
   plugins: [
     {

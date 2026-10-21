@@ -1,0 +1,57 @@
+name: Check OpenAPI Spec
+
+on:
+  schedule:
+    # every monday
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}
+
+env:
+  NODE_VERSION: 24
+  ISSUE_TITLE: Upstream OpenAPI spec changed
+  ISSUE_LABEL: openapi-spec-changed
+
+permissions: {}
+
+jobs:
+  check:
+    name: Compare with the live spec
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Using node v-${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Download live spec
+        run: curl --fail --silent --show-error https://sdk.usegrant.dev/open-api.json --output "$RUNNER_TEMP/open-api.json"
+
+      - name: Compare specs
+        id: diff
+        run: |
+          node scripts/openapi-diff.mjs src/generated/source.json "$RUNNER_TEMP/open-api.json" > "$RUNNER_TEMP/issue.md"
+          if [ -s "$RUNNER_TEMP/issue.md" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update issue
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create "$ISSUE_LABEL" --color FBCA04 --description "Upstream OpenAPI spec differs from the generated SDK" --force
+          existing=$(gh issue list --state open --label "$ISSUE_LABEL" --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue edit "$existing" --body-file "$RUNNER_TEMP/issue.md"
+          else
+            gh issue create --title "$ISSUE_TITLE" --label "$ISSUE_LABEL" --body-file "$RUNNER_TEMP/issue.md"
+          fi
