@@ -5,17 +5,21 @@ import * as z from 'zod';
 /**
  * OK
  */
-export const zProvidersListResponse = z.array(
-  z.object({
-    id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    urlId: z.string(),
-    createdAt: z.iso.datetime(),
-    updatedAt: z.iso.datetime(),
-    rotateJwks: z.boolean(),
-  }),
-);
+export const zProvidersListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      urlId: z.string(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+      rotateJwks: z.boolean(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersCreateBody = z.object({
   name: z
@@ -33,133 +37,181 @@ export const zProvidersCreateBody = z.object({
 /**
  * OK
  */
-export const zProvidersCreateResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-  urlId: z.string(),
-  rotateJwks: z.boolean(),
-});
+export const zProvidersCreateResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+    urlId: z.string(),
+    rotateJwks: z.boolean(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersDeletePath = z.object({
   id: z.string(),
 });
 
 export const zProvidersGetPath = z.object({
-  id: z.string(),
+  id: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zProvidersGetResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  rotateJwks: z.boolean(),
-  urlId: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const zProvidersDomainsListPath = z.object({
-  providerId: z.string(),
-});
-
-/**
- * OK
- */
-export const zProvidersDomainsListResponse = z.array(
-  z.object({
+export const zProvidersGetResponse = z
+  .object({
     id: z.string(),
-    domain: z.string(),
-    verified: z.boolean(),
+    name: z.string(),
+    description: z.string(),
+    rotateJwks: z.boolean(),
+    urlId: z.string(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+export const zProvidersDomainsListPath = z.object({
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
   }),
-);
+});
+
+/**
+ * OK
+ */
+export const zProvidersDomainsListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      domain: z.string(),
+      verified: z.boolean(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersDomainsAddBody = z.object({
   domain: z.unknown(),
 });
 
 export const zProvidersDomainsAddPath = z.object({
-  providerId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zProvidersDomainsAddResponse = z.object({
-  id: z.string(),
-  domain: z.string(),
-  verified: z.boolean(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zProvidersDomainsAddResponse = z
+  .object({
+    id: z.string(),
+    domain: z.string(),
+    verified: z.boolean(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersDomainsDeletePath = z.object({
-  providerId: z.string(),
-  domainId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
+  domainId: z.string().register(z.globalRegistry, {
+    description: 'Domain ID',
+  }),
 });
 
 export const zProvidersDomainsGetPath = z.object({
-  providerId: z.string(),
-  domainId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
+  domainId: z.string().register(z.globalRegistry, {
+    description: 'Domain ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zProvidersDomainsGetResponse = z.object({
-  id: z.string(),
-  domain: z.string(),
-  verified: z.boolean(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const zProvidersDomainsVerifyPath = z.object({
-  providerId: z.string(),
-  domainId: z.string(),
-});
-
-/**
- * OK
- */
-export const zProvidersDomainsVerifyResponse = z.object({
-  verified: z.boolean(),
-  message: z.string(),
-  domain: z
-    .object({
-      id: z.string(),
-      domain: z.string(),
-      verified: z.boolean(),
-      createdAt: z.iso.datetime(),
-      updatedAt: z.iso.datetime(),
-    })
-    .nullable(),
-});
-
-export const zProvidersClientsListPath = z.object({
-  providerId: z.string(),
-});
-
-/**
- * OK
- */
-export const zProvidersClientsListResponse = z.array(
-  z.object({
+export const zProvidersDomainsGetResponse = z
+  .object({
     id: z.string(),
-    name: z.string(),
-    audience: z.string(),
-    subject: z.string(),
+    domain: z.string(),
+    verified: z.boolean(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+export const zProvidersDomainsVerifyPath = z.object({
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
   }),
-);
+  domainId: z.string().register(z.globalRegistry, {
+    description: 'Domain ID',
+  }),
+});
+
+/**
+ * OK
+ */
+export const zProvidersDomainsVerifyResponse = z
+  .object({
+    verified: z.boolean(),
+    message: z.string(),
+    domain: z
+      .object({
+        id: z.string(),
+        domain: z.string(),
+        verified: z.boolean(),
+        createdAt: z.iso.datetime(),
+        updatedAt: z.iso.datetime(),
+      })
+      .nullable(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+export const zProvidersClientsListPath = z.object({
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
+});
+
+/**
+ * OK
+ */
+export const zProvidersClientsListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      audience: z.string(),
+      subject: z.string(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersClientsCreateBody = z.object({
   name: z
@@ -175,43 +227,61 @@ export const zProvidersClientsCreateBody = z.object({
 });
 
 export const zProvidersClientsCreatePath = z.object({
-  providerId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zProvidersClientsCreateResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  audience: z.string(),
-  subject: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-  providerId: z.string(),
-});
+export const zProvidersClientsCreateResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    audience: z.string(),
+    subject: z.string(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+    providerId: z.string(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersClientsDeletePath = z.object({
-  providerId: z.string(),
-  clientId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
+  clientId: z.string().register(z.globalRegistry, {
+    description: 'Client ID',
+  }),
 });
 
 export const zProvidersClientsGetPath = z.object({
-  providerId: z.string(),
-  clientId: z.string(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
+  }),
+  clientId: z.string().register(z.globalRegistry, {
+    description: 'Client ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zProvidersClientsGetResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  audience: z.string(),
-  subject: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zProvidersClientsGetResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    audience: z.string(),
+    subject: z.string(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zProvidersClientsTokensCreateBody = z.object({
   expiresIn: z.number().gt(0).lte(172800).optional().default(3600),
@@ -221,31 +291,43 @@ export const zProvidersClientsTokensCreateBody = z.object({
 });
 
 export const zProvidersClientsTokensCreatePath = z.object({
-  providerId: z.string(),
-  clientId: z.string(),
-});
-
-/**
- * OK
- */
-export const zProvidersClientsTokensCreateResponse = z.object({
-  accessToken: z.string(),
-  type: z.literal('Bearer'),
-  expiresAt: z.iso.datetime(),
-});
-
-/**
- * OK
- */
-export const zTenantsListResponse = z.array(
-  z.object({
-    id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    createdAt: z.iso.datetime(),
-    updatedAt: z.iso.datetime(),
+  providerId: z.string().register(z.globalRegistry, {
+    description: 'Provider ID',
   }),
-);
+  clientId: z.string().register(z.globalRegistry, {
+    description: 'Client ID',
+  }),
+});
+
+/**
+ * OK
+ */
+export const zProvidersClientsTokensCreateResponse = z
+  .object({
+    accessToken: z.string(),
+    type: z.literal('Bearer'),
+    expiresAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+/**
+ * OK
+ */
+export const zTenantsListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsCreateBody = z.object({
   name: z
@@ -263,51 +345,69 @@ export const zTenantsCreateBody = z.object({
 /**
  * OK
  */
-export const zTenantsCreateResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zTenantsCreateResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsDeletePath = z.object({
-  id: z.string(),
+  id: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
 });
 
 export const zTenantsGetPath = z.object({
-  id: z.string(),
+  id: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsGetResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const zTenantsProvidersListPath = z.object({
-  tenantId: z.string(),
-});
-
-/**
- * OK
- */
-export const zTenantsProvidersListResponse = z.array(
-  z.object({
+export const zTenantsGetResponse = z
+  .object({
     id: z.string(),
-    url: z.string(),
-    audience: z.string(),
-    fingerprints: z.array(z.string()),
-    earliestIssuanceTimeAllowed: z.number(),
+    name: z.string(),
+    description: z.string(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+export const zTenantsProvidersListPath = z.object({
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
   }),
-);
+});
+
+/**
+ * OK
+ */
+export const zTenantsProvidersListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      url: z.string(),
+      audience: z.string(),
+      fingerprints: z.array(z.string()),
+      earliestIssuanceTimeAllowed: z.number(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsProvidersCreateBody = z.object({
   url: z.url(),
@@ -326,84 +426,112 @@ export const zTenantsProvidersCreateBody = z.object({
     .min(3)
     .max(100)
     .regex(/^[A-Za-z\d\-_\s]+$/),
-  earliestIssuanceTimeAllowed: z.number().gte(0).lte(12),
+  earliestIssuanceTimeAllowed: z.number().gte(0).lte(12).register(z.globalRegistry, {
+    description: 'Earliest issuance time allowed in hours',
+  }),
 });
 
 export const zTenantsProvidersCreatePath = z.object({
-  tenantId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsProvidersCreateResponse = z.object({
-  id: z.string(),
-  url: z.string(),
-  audience: z.string(),
-  fingerprints: z.array(z.string()),
-  earliestIssuanceTimeAllowed: z.number(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zTenantsProvidersCreateResponse = z
+  .object({
+    id: z.string(),
+    url: z.string(),
+    audience: z.string(),
+    fingerprints: z.array(z.string()),
+    earliestIssuanceTimeAllowed: z.number(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsProvidersDeletePath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
 });
 
 export const zTenantsProvidersGetPath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsProvidersGetResponse = z.object({
-  id: z.string(),
-  url: z.string(),
-  audience: z.string(),
-  fingerprints: z.array(z.string()),
-  earliestIssuanceTimeAllowed: z.number(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
-
-export const zTenantsProvidersPoliciesListPath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
-});
-
-/**
- * OK
- */
-export const zTenantsProvidersPoliciesListResponse = z.array(
-  z.object({
+export const zTenantsProvidersGetResponse = z
+  .object({
     id: z.string(),
-    name: z.string(),
-    description: z.string(),
+    url: z.string(),
     audience: z.string(),
-    conditions: z
-      .array(
-        z.object({
-          key: z
-            .string()
-            .min(1)
-            .max(10)
-            .regex(/^[A-Za-z\d\-_\s]+$/),
-          operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
-          value: z
-            .string()
-            .min(1)
-            .max(100)
-            .regex(/^[A-Za-z\d\-_\s]+$/),
-        }),
-      )
-      .nullish(),
+    fingerprints: z.array(z.string()),
+    earliestIssuanceTimeAllowed: z.number(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
+
+export const zTenantsProvidersPoliciesListPath = z.object({
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
   }),
-);
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
+});
+
+/**
+ * OK
+ */
+export const zTenantsProvidersPoliciesListResponse = z
+  .array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      description: z.string(),
+      audience: z.string(),
+      conditions: z
+        .array(
+          z.object({
+            key: z
+              .string()
+              .min(1)
+              .max(10)
+              .regex(/^[A-Za-z\d\-_\s]+$/),
+            operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
+            value: z
+              .string()
+              .min(1)
+              .max(100)
+              .regex(/^[A-Za-z\d\-_\s]+$/),
+          }),
+        )
+        .nullish(),
+      createdAt: z.iso.datetime(),
+      updatedAt: z.iso.datetime(),
+    }),
+  )
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsProvidersPoliciesCreateBody = z.object({
   name: z
@@ -441,79 +569,103 @@ export const zTenantsProvidersPoliciesCreateBody = z.object({
 });
 
 export const zTenantsProvidersPoliciesCreatePath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsProvidersPoliciesCreateResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  audience: z.string(),
-  conditions: z
-    .array(
-      z.object({
-        key: z
-          .string()
-          .min(1)
-          .max(10)
-          .regex(/^[A-Za-z\d\-_\s]+$/),
-        operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
-        value: z
-          .string()
-          .min(1)
-          .max(100)
-          .regex(/^[A-Za-z\d\-_\s]+$/),
-      }),
-    )
-    .nullish(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zTenantsProvidersPoliciesCreateResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    audience: z.string(),
+    conditions: z
+      .array(
+        z.object({
+          key: z
+            .string()
+            .min(1)
+            .max(10)
+            .regex(/^[A-Za-z\d\-_\s]+$/),
+          operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
+          value: z
+            .string()
+            .min(1)
+            .max(100)
+            .regex(/^[A-Za-z\d\-_\s]+$/),
+        }),
+      )
+      .nullish(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsProvidersPoliciesDeletePath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
-  policyId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
+  policyId: z.string().register(z.globalRegistry, {
+    description: 'Policy ID',
+  }),
 });
 
 export const zTenantsProvidersPoliciesGetPath = z.object({
-  tenantId: z.string(),
-  tenantProviderId: z.string(),
-  policyId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
+  tenantProviderId: z.string().register(z.globalRegistry, {
+    description: 'Tenant Provider ID',
+  }),
+  policyId: z.string().register(z.globalRegistry, {
+    description: 'Policy ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsProvidersPoliciesGetResponse = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  audience: z.string(),
-  conditions: z
-    .array(
-      z.object({
-        key: z
-          .string()
-          .min(1)
-          .max(10)
-          .regex(/^[A-Za-z\d\-_\s]+$/),
-        operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
-        value: z
-          .string()
-          .min(1)
-          .max(100)
-          .regex(/^[A-Za-z\d\-_\s]+$/),
-      }),
-    )
-    .nullish(),
-  createdAt: z.iso.datetime(),
-  updatedAt: z.iso.datetime(),
-});
+export const zTenantsProvidersPoliciesGetResponse = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    audience: z.string(),
+    conditions: z
+      .array(
+        z.object({
+          key: z
+            .string()
+            .min(1)
+            .max(10)
+            .regex(/^[A-Za-z\d\-_\s]+$/),
+          operator: z.enum(['stringEquals', 'stringLike', 'stringNotEquals', 'stringNotLike']),
+          value: z
+            .string()
+            .min(1)
+            .max(100)
+            .regex(/^[A-Za-z\d\-_\s]+$/),
+        }),
+      )
+      .nullish(),
+    createdAt: z.iso.datetime(),
+    updatedAt: z.iso.datetime(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });
 
 export const zTenantsTokensValidateBody = z.object({
   tenantProviderPolicyId: z.string(),
@@ -521,12 +673,18 @@ export const zTenantsTokensValidateBody = z.object({
 });
 
 export const zTenantsTokensValidatePath = z.object({
-  tenantId: z.string(),
+  tenantId: z.string().register(z.globalRegistry, {
+    description: 'Tenant ID',
+  }),
 });
 
 /**
  * OK
  */
-export const zTenantsTokensValidateResponse = z.object({
-  exp: z.number().optional(),
-});
+export const zTenantsTokensValidateResponse = z
+  .object({
+    exp: z.number().optional(),
+  })
+  .register(z.globalRegistry, {
+    description: 'OK',
+  });

@@ -12,7 +12,10 @@ export default {
       runtimeConfigPath: './src/client-config',
     },
     '@hey-api/typescript',
-    'zod',
+    {
+      name: 'zod',
+      metadata: true,
+    },
     {
       name: '@hey-api/sdk',
       validator: true,
