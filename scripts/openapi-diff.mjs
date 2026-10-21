@@ -38,7 +38,7 @@ const operations = (spec) => {
 
 const describe = ([key, operation]) => `- \`${key}\`${operation.operationId ? ` (\`${operation.operationId}\`)` : ''}`;
 
-export const diffSpecs = (committed, upstream) => {
+export const compareSpecs = (committed, upstream) => {
   const before = operations(committed);
   const after = operations(upstream);
 
@@ -50,7 +50,19 @@ export const diffSpecs = (committed, upstream) => {
   const { paths: _upstreamPaths, ...upstreamRest } = upstream;
   const otherChanged = canonical(committedRest) !== canonical(upstreamRest);
 
-  if (!added.length && !removed.length && !changed.length && !otherChanged) {
+  return {
+    added,
+    removed,
+    changed,
+    otherChanged,
+    hasChanges: added.length > 0 || removed.length > 0 || changed.length > 0 || otherChanged,
+  };
+};
+
+export const diffSpecs = (committed, upstream) => {
+  const { added, removed, changed, otherChanged, hasChanges } = compareSpecs(committed, upstream);
+
+  if (!hasChanges) {
     return '';
   }
 

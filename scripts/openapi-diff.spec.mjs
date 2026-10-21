@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { diffSpecs } from './openapi-diff.mjs';
+import { compareSpecs, diffSpecs } from './openapi-diff.mjs';
 
 const createSpec = () => ({
   openapi: '3.1.1',
@@ -113,5 +113,25 @@ describe('diffSpecs', () => {
     expect(diffSpecs(createSpec(), upstream)).toMatch(
       /### Next steps\n\n1\. Run `npm run generate`[\s\S]*3\. Add a changeset$/,
     );
+  });
+});
+
+describe('compareSpecs', () => {
+  it('should return the added, removed and changed operations', () => {
+    const upstream = createSpec();
+    upstream.paths['/v1/tenants'] = { get: { operationId: 'tenants.list', responses: {} } };
+    delete upstream.paths['/v1/providers'].post;
+    upstream.paths['/v1/providers/{id}'].get.responses[404] = { description: 'Not found' };
+
+    const { added, removed, changed, otherChanged, hasChanges } = compareSpecs(createSpec(), upstream);
+    expect(added.map(([key]) => key)).toEqual(['GET /v1/tenants']);
+    expect(removed.map(([key]) => key)).toEqual(['POST /v1/providers']);
+    expect(changed.map(([key]) => key)).toEqual(['GET /v1/providers/{id}']);
+    expect(otherChanged).toBe(false);
+    expect(hasChanges).toBe(true);
+  });
+
+  it('should report no changes for the same spec', () => {
+    expect(compareSpecs(createSpec(), createSpec()).hasChanges).toBe(false);
   });
 });
