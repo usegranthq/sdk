@@ -1,6 +1,6 @@
 '**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx}':
   - oxlint --fix
-  - prettier --write
+  - oxfmt --no-error-on-unmatched-pattern
 
 '**/*.{md,mdx,json,yml,yaml,html,css}':
-  - prettier --write
+  - oxfmt --no-error-on-unmatched-pattern
